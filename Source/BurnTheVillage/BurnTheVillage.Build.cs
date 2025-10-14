@@ -20,10 +20,15 @@ public class BurnTheVillage : ModuleRules
 			"GameplayStateTreeModule",
 			"Niagara",
 			"UMG",
-			"Slate"
+			"Slate",
+			"Json",
+			"JsonUtilities"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+		PrivateDependencyModuleNames.AddRange(new string[] {
+			"Json",
+            "JsonUtilities"
+        });
 
 		PublicIncludePaths.AddRange(new string[] {
 			"BurnTheVillage",
