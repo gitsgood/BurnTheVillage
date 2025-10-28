@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "PathfinderModule.h"
 #include "StrategyPlayerController.generated.h"
 
 class AStrategyPawn;
