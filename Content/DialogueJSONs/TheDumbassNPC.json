@@ -1,0 +1,39 @@
+{
+    "NPCId": "TheDumbass",
+    "Nodes":
+    [
+        {
+            "NodeId": "START",
+            "NPCDialogue": "Hello my fellow darth wiseau!",
+            "OutgoingEdgeIds": ["FuckYouOption", "ILoveWiseau"]
+        },
+        {
+            "NodeId": "GOODBYE",
+            "NPCDialogue": "Goodbye you ingrate, uncultured SWINE!",
+            "OutgoingEdgeIds": ["ByeBye"]
+        },
+        {
+            "NodeId": "INITIATION",
+            "NPCDialogue": "Yes... come with me...",
+            "OutgoingEdgeIds": ["ByeBye"]
+        }
+    ],
+    "Edges":
+    [
+        {
+            "EdgeId": "FuckYouOption",
+            "PlayerDialogue": "I hate you, I hate Tommy Wiseau, He ruined everything!",
+            "NextNodeId": "GOODBYE"
+        },
+        {
+            "EdgeId": "ILoveWiseau",
+            "PlayerDialogue": "OMG, I fucking LOVE THIS, PLEASE INITIATE ME INTO THINE WAYS!",
+            "NextNodeId": "INITIATION"
+        },
+        {
+            "EdgeId": "ByeBye",
+            "PlayerDialogue": "...",
+            "NextNodeId": ""
+        }
+    ]
+}
