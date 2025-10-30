@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
 #include "Engine/World.h"
+#include "BurnTheVillageDialogueManager.h"
 
 ABurnTheVillageCharacter::ABurnTheVillageCharacter()
 {
@@ -45,6 +46,9 @@ ABurnTheVillageCharacter::ABurnTheVillageCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	// WE WILL INSTANTIATE AN OBJECT OF TYPE DIALOGUE MANAGER IN THE CONSTRUCTOR
+	DialogueManager = CreateDefaultSubobject<UBurnTheVillageDialogueManager>(TEXT("DialogueManager"));	//	As I understand it, we create a default object (within the character object, hence the "subObject"), and giving it the name "DialogueManager" should allow the pointer in the header to track this.
 }
 
 void ABurnTheVillageCharacter::BeginPlay()
@@ -59,4 +63,14 @@ void ABurnTheVillageCharacter::Tick(float DeltaSeconds)
     Super::Tick(DeltaSeconds);
 
 	// stub
+}
+
+UBurnTheVillageDialogueManager* ABurnTheVillageCharacter::GetDialogueManager() const
+{
+	if (!DialogueManager)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DIALOGUE MANAGER HAS NOT BEEN GOT"));
+		return nullptr;
+	}
+	return DialogueManager;
 }

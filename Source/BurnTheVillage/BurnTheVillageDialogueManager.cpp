@@ -104,3 +104,13 @@ void UBurnTheVillageDialogueManager::EndDialogue()
 	CurrentNPCId.Empty();
 	CurrentNodeId.Empty();
 }
+
+FString UBurnTheVillageDialogueManager::GetNPCDialogueContent(const FBurnTheVillageDialogueNode& Node) const
+{
+	return Node.NPCDialogue;
+}
+
+FString UBurnTheVillageDialogueManager::GetPlayerDialogueContent(const FBurnTheVillageDialogueEdge& PlayerEdge) const
+{
+	return PlayerEdge.PlayerDialogue;
+}

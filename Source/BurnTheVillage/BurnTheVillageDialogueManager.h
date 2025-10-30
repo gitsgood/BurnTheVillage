@@ -70,4 +70,12 @@ public:
 	//	Empties CurrentNPCId and CurrentNodeId.
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	void EndDialogue();
+
+	//	Returns the actual NPC dialogue content.
+	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	FString GetNPCDialogueContent(const FBurnTheVillageDialogueNode& Node) const;
+
+	//	Returns the actual player dialogue, depending on index.
+	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	FString GetPlayerDialogueContent(const FBurnTheVillageDialogueEdge& PlayerEdge) const;
 };

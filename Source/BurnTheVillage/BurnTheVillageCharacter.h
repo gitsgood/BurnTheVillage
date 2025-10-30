@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "BurnTheVillageCharacter.generated.h"
 
+class UBurnTheVillageDialogueManager;
+
 /**
  *  A controllable top-down perspective character
  */
@@ -41,5 +43,13 @@ public:
 	/** Returns the Camera Boom component **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
+	// THIS CODE BELONGS TO US -------------------------------------------------------------------------------------------------------
+
+	// The character class will need to instantiate the dialogue manager class in order to handle to dialogue logic.
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	UBurnTheVillageDialogueManager* DialogueManager;
+
+	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	UBurnTheVillageDialogueManager* GetDialogueManager() const;
 };
 

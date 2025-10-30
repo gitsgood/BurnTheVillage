@@ -29,7 +29,7 @@ protected:
 	float ShortPressThreshold;
 
 	/** FX Class that we will spawn when clicking */
-	UPROPERTY(EditAnywhere, Category="Input")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
 	UNiagaraSystem* FXCursor;
 
 	/** MappingContext */
