@@ -22,5 +22,5 @@ protected:
 	ABurnTheVillageCharacter* PlayerInstance;
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
-	ABurnTheVillageCharacter* GetPlayerCharacterReference(UObject* WorldContextObject);
+	ABurnTheVillageCharacter* GetPlayerCharacterReference(const UObject* WorldContextObject) const;
 };
