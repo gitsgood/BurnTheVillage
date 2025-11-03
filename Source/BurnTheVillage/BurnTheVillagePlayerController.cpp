@@ -12,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "BurnTheVillage.h"
+#include "BurnTheVillageCharacter.h"	//	I include this so that when we GetLocalPlayer, we cast it into this to call the actual implementation of the interact function.
 
 ABurnTheVillagePlayerController::ABurnTheVillagePlayerController()
 {
@@ -53,6 +54,9 @@ void ABurnTheVillagePlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &ABurnTheVillagePlayerController::OnTouchTriggered);
 			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &ABurnTheVillagePlayerController::OnTouchReleased);
 			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &ABurnTheVillagePlayerController::OnTouchReleased);
+
+			//	YEEEAAHAHAHA, WE SET UP THE INTERACTION BUTTON RIGHT HERE MOUHAHAHAHAHA
+			EnhancedInputComponent->BindAction(InteractionAction, ETriggerEvent::Started, this, &ABurnTheVillagePlayerController::OnInteractionPressed);
 		}
 		else
 		{
@@ -122,4 +126,12 @@ void ABurnTheVillagePlayerController::OnTouchReleased()
 {
 	bIsTouch = false;
 	OnSetDestinationReleased();
+}
+
+void ABurnTheVillagePlayerController::OnInteractionPressed()
+{
+	UE_LOG(LogTemp, Log, TEXT("Interaction button pressed!"))
+	ABurnTheVillageCharacter* PlayerCharacter = Cast<ABurnTheVillageCharacter>(GetCharacter());
+	if (!PlayerCharacter) return;
+	PlayerCharacter->OnInteractionStarted();
 }

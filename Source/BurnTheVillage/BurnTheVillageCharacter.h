@@ -7,6 +7,8 @@
 #include "BurnTheVillageCharacter.generated.h"
 
 class UBurnTheVillageDialogueManager;
+class ABurnTheVillageNPC;
+class UInputAction;
 
 /**
  *  A controllable top-down perspective character
@@ -44,12 +46,54 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
 	// THIS CODE BELONGS TO US -------------------------------------------------------------------------------------------------------
+protected:
+	//	Our little trigger sphere triggering the triggers that will trigger the events that trigger the interaction that triggers the dialogue...
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	class USphereComponent* SphereTrigger;
+
+private:
+	//	These two are here JUST for the button press initiate interact logic. FUCK.
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
+	bool bIsOverlappingInteractable = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
+	AActor* CurrentInteractableActor = nullptr;
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Dialogue")
+	FString CurrentNPCIDThatIsTalkedTo;
 
 	// The character class will need to instantiate the dialogue manager class in order to handle to dialogue logic.
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Dialogue")
 	UBurnTheVillageDialogueManager* DialogueManager;
 
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+public:
+	UFUNCTION(BlueprintCallable, Category = "Player|Dialogue")
 	UBurnTheVillageDialogueManager* GetDialogueManager() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Player|Dialogue")
+	void SetCurrentNPCIDThatIsTalkedTo(FString CurrentConversationNPC) { CurrentNPCIDThatIsTalkedTo = CurrentConversationNPC; }
+
+	UFUNCTION()
+	void OnTriggerSphereBeginOverlap(
+		UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult
+	);
+
+	UFUNCTION()
+	void OnTriggerSphereEndOverlap(
+		UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex
+	);
+
+	UFUNCTION()
+	void OnInteractionStarted();
 };
 

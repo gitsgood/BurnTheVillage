@@ -40,9 +40,9 @@ bool UBurnTheVillageDialogueManager::LoadDialogueFromFile(const FString& FilePat
 bool UBurnTheVillageDialogueManager::InitiateConversationState(const FString& NPCId, const FString& StartNodeId)
 {
 	const FDialogueData* DialogueData = AllDialogues.Find(NPCId);
-	if (!DialogueData) { UE_LOG(LogTemp, Warning, TEXT("StartDialogue(...): No dialogue found for this NPCId: %s"), *NPCId); return false; }
+	if (!DialogueData) { UE_LOG(LogTemp, Warning, TEXT("InitiateConversationState(...): No dialogue found for this NPCId: %s"), *NPCId); return false; }
 
-	if (!DialogueData->NodeMap.Contains(StartNodeId)) { UE_LOG(LogTemp, Warning, TEXT("StartDialogue(...): StartingNode %s not found for NPCId %s"), *StartNodeId, *NPCId); return false; }
+	if (!DialogueData->NodeMap.Contains(StartNodeId)) { UE_LOG(LogTemp, Warning, TEXT("InitiateConversationState(...): StartingNode %s not found for NPCId %s"), *StartNodeId, *NPCId); return false; }
 
 	CurrentNPCId = NPCId;
 	CurrentNodeId = StartNodeId;

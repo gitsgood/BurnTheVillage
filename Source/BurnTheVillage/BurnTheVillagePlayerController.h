@@ -44,6 +44,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* SetDestinationTouchAction;
 
+	//	HUMAN ADDITION IS RIGHT HERE, RIGHT HEEEEEREEE <-----------------------------------------------------------------------------------------------------------------
+	UPROPERTY(EditAnywhere, Category = "Input|Interaction")
+	UInputAction* InteractionAction;
+
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
 
@@ -73,6 +77,8 @@ protected:
 	void OnTouchTriggered();
 	void OnTouchReleased();
 
+	//	HUMAN ADDITION IS ALSO HERE --------------------------------------------------------------------------------------------------------------------------------------
+	void OnInteractionPressed();
 };
 
 

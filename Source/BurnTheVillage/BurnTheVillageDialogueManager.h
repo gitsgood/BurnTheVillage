@@ -24,7 +24,7 @@ struct FDialogueData
 	TMap<FString, FBurnTheVillageDialogueEdge> EdgeMap;
 };
 
-UCLASS()
+UCLASS(BlueprintType)
 class BURNTHEVILLAGE_API UBurnTheVillageDialogueManager : public UObject
 {
 	GENERATED_BODY()
@@ -48,34 +48,34 @@ public:
 	//	bool return type is used so that later down the line the functions using them can make use of their return to ensure things run if they work and communicate clearly if they don't.
 
 	//	This is the function that finds the JSON, takes in its contents as one huge string, and then populates the FDialogueData struct.
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	UFUNCTION(BlueprintCallable, Category = "DialogueManager|Dialogue")
 	bool LoadDialogueFromFile(const FString& FilePath);
 
 	//	Initiates conversation state by identifying NPC's ID as well as their starting line (Node) ID.
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	UFUNCTION(BlueprintCallable, Category = "DialogueManager|Dialogue")
 	bool InitiateConversationState(const FString& NPCId, const FString& StartNodeId = "START");
 
 	//	Based on CurrentNPCId, gets a pointer to the actual current dialogue Node.
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	UFUNCTION(BlueprintCallable, Category = "DialogueManager|Dialogue")
 	bool GetCurrentNode(FBurnTheVillageDialogueNode& OutNode);
 
 	//	Gets the full Edges (player dialogue options) the CurrentNode is connected to.
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	UFUNCTION(BlueprintCallable, Category = "DialogueManager|Dialogue")
 	TArray<FBurnTheVillageDialogueEdge> GetCurrentPlayerDialogueOptions();
 
 	//	Takes player's option EdgeId as parameter and sets the CurrentNodeId to the Node that comes next after the Edge the player chose. Returns false if Next doesn't exist for current Edge.
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	UFUNCTION(BlueprintCallable, Category = "DialogueManager|Dialogue")
 	bool AdvanceDialogue(const FString& EdgeId);
 
 	//	Empties CurrentNPCId and CurrentNodeId.
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	UFUNCTION(BlueprintCallable, Category = "DialogueManager|Dialogue")
 	void EndDialogue();
 
 	//	Returns the actual NPC dialogue content.
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	UFUNCTION(BlueprintCallable, Category = "DialogueManager|Dialogue")
 	FString GetNPCDialogueContent(const FBurnTheVillageDialogueNode& Node) const;
 
 	//	Returns the actual player dialogue, depending on index.
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	UFUNCTION(BlueprintCallable, Category = "DialogueManager|Dialogue")
 	FString GetPlayerDialogueContent(const FBurnTheVillageDialogueEdge& PlayerEdge) const;
 };
