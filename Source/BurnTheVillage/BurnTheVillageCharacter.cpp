@@ -60,6 +60,7 @@ ABurnTheVillageCharacter::ABurnTheVillageCharacter()
 	SphereTrigger->SetGenerateOverlapEvents(true);
 	SphereTrigger->SetCollisionProfileName(FName("Trigger"));
 	SphereTrigger->OnComponentBeginOverlap.AddDynamic(this, &ABurnTheVillageCharacter::OnTriggerSphereBeginOverlap);
+	SphereTrigger->OnComponentEndOverlap.AddDynamic(this, &ABurnTheVillageCharacter::OnTriggerSphereEndOverlap);
 
 	//	WE WILL INSTANTIATE AN OBJECT OF TYPE DIALOGUE MANAGER IN THE CONSTRUCTOR
 	DialogueManager = CreateDefaultSubobject<UBurnTheVillageDialogueManager>(TEXT("DialogueManager"));	//	As I understand it, we create a default object (within the character object, hence the "subObject").
@@ -88,12 +89,12 @@ void ABurnTheVillageCharacter::BeginPlay()
 	{
 		if (!DialogueManager)
 		{
-			UE_LOG(LogTemp, Error, TEXT("ABurnTheVillageCharacter::BeginPlay() says: constructor failed to instantiate a dialogue manager class."))
+			UE_LOG(LogTemp, Error, TEXT("%s says: constructor failed to instantiate a dialogue manager class."), TEXT(__FUNCTION__))
 			break;
 		}
 		FString DialoguesFilePath{ FPaths::ProjectContentDir() + TEXT("OurFuckingFolder/DialogueJSONs/") + DialogueJsonPath};
 		DialogueManager->LoadDialogueFromFile(DialoguesFilePath);
-		UE_LOG(LogTemp, Warning, TEXT("ABurnTheVillageCharacter::BeginPlay() says: Added contents of %s into DialogueManager"), *DialoguesFilePath)
+		UE_LOG(LogTemp, Warning, TEXT("%s says: Added contents of %s into DialogueManager"), TEXT(__FUNCTION__), *DialoguesFilePath)
 	}
 }
 
@@ -108,7 +109,7 @@ UBurnTheVillageDialogueManager* ABurnTheVillageCharacter::GetDialogueManager() c
 {
 	if (!DialogueManager)
 	{
-		UE_LOG(LogTemp, Error, TEXT("ABurnTheVillageCharacter() says: DIALOGUE MANAGER HAS NOT BEEN SET"));
+		UE_LOG(LogTemp, Error, TEXT("%s says: DIALOGUE MANAGER HAS NOT BEEN SET"), TEXT(__FUNCTION__));
 		return nullptr;
 	}
 	return DialogueManager;
@@ -119,27 +120,40 @@ void ABurnTheVillageCharacter::OnTriggerSphereBeginOverlap(UPrimitiveComponent* 
 	if (!OtherActor || !OtherActor->Implements<UBurnTheVillageInteractInterface>()) return;
 	bIsOverlappingInteractable = true;
 	CurrentInteractableActor = OtherActor;
-	UE_LOG(LogTemp, Log, TEXT("Trigger Sphere has detected an interface"))
+	UE_LOG(LogTemp, Log, TEXT("%s says: Trigger Sphere has detected an interface"), TEXT(__FUNCTION__))
 	
 	//	Some people say "cast to interface for blablabla". I say no to that. I want this cast for the most precious thing of all... THEIR FUCKING ID.
+	//	Calling the function from interface, just like god intended. Pardon my past self, I have now seen the light.
+	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(OtherActor);
+	if (!Interface) return;
+
+	Interface->ShowInteract(OtherActor, bFromSweep);
+
 	ABurnTheVillageNPC* InteractedWithNPC = Cast<ABurnTheVillageNPC>(OtherActor);
 	if (!InteractedWithNPC) return;
-
-	InteractedWithNPC->ShowInteract(OtherActor, bFromSweep);
 	this->SetCurrentNPCIDThatIsTalkedTo(InteractedWithNPC->GetNPCId());
 }
 
 void ABurnTheVillageCharacter::OnTriggerSphereEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (!OtherActor || !OtherActor->Implements<UBurnTheVillageInteractInterface>()) return;
 	if (OtherActor == CurrentInteractableActor)
 	{
 		bIsOverlappingInteractable = false;
 		CurrentInteractableActor = nullptr;
 	}
+	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(OtherActor);
+	if (!Interface) return;
+
+	Interface->HideInteract(OtherActor);
 }
 
 void ABurnTheVillageCharacter::OnInteractionStarted()
 {
-	UE_LOG(LogTemp, Log, TEXT("Interaction action succesfully triggered"))
+	UE_LOG(LogTemp, Log, TEXT("%s says: Interaction action succesfully triggered"), TEXT(__FUNCTION__))
 	if (!bIsOverlappingInteractable || !CurrentInteractableActor) return;
+
+	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(CurrentInteractableActor);
+	if (!Interface) return;
+	Interface->InitiateInteraction(CurrentInteractableActor);
 }

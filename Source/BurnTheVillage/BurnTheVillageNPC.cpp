@@ -5,6 +5,7 @@
 #include "Components/WidgetComponent.h"		//	NPC's need a pointer to the nice little floating interaction interface.
 #include "Components/CapsuleComponent.h"	//	Decided I might as well construct the full thing in here, because why the fuck not.
 #include "BurnTheVillageDialogueWidget.h"	//	Turns out the NPC's are responsible for creating the dialogue widget.
+#include "BurnTheVillageInteractPrompt.h"	//	Every NPC has their own little pretty interact prompt that shows up.
 
 // Sets default values
 ABurnTheVillageNPC::ABurnTheVillageNPC()
@@ -17,13 +18,17 @@ ABurnTheVillageNPC::ABurnTheVillageNPC()
 	CapsuleTrigger->SetWorldScale3D(FVector(3.3875, 3.3875, 3.3875));
 	CapsuleTrigger->SetGenerateOverlapEvents(true);
 
+	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
+	Widget->SetupAttachment(RootComponent);
+	//Widget->SetVisibility(false);
+
 }
 
 // Called when the game starts or when spawned
 void ABurnTheVillageNPC::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -48,6 +53,7 @@ FString ABurnTheVillageNPC::GetNPCId() const
 void ABurnTheVillageNPC::ShowInteract(AActor* Interactor, bool bIsInRange)
 {
 	if (Widget)
+		UE_LOG(LogTemp, Log, TEXT("%s says: Showing NPC's Interact Prompt widget..."), TEXT(__FUNCTION__))
 		Widget->SetHiddenInGame(!bIsInRange);
 }
 
