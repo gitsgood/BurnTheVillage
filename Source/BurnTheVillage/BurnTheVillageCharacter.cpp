@@ -117,21 +117,27 @@ UBurnTheVillageDialogueManager* ABurnTheVillageCharacter::GetDialogueManager() c
 
 void ABurnTheVillageCharacter::OnTriggerSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!OtherActor || !OtherActor->Implements<UBurnTheVillageInteractInterface>()) return;
+	if (!OtherActor) return;
+	if (OtherActor == this) return;
+	if (!OtherActor->Implements<UBurnTheVillageInteractInterface>()) return;
 	bIsOverlappingInteractable = true;
 	CurrentInteractableActor = OtherActor;
-	UE_LOG(LogTemp, Log, TEXT("%s says: Trigger Sphere has detected an interface"), TEXT(__FUNCTION__))
+	UE_LOG(LogTemp, Log, TEXT("%s says: Trigger Sphere has detected an interface, collided with %s which is located at %s"), TEXT(__FUNCTION__), *OtherActor->GetName(), *OtherActor->GetActorLocation().ToString())
 	
 	//	Some people say "cast to interface for blablabla". I say no to that. I want this cast for the most precious thing of all... THEIR FUCKING ID.
 	//	Calling the function from interface, just like god intended. Pardon my past self, I have now seen the light.
 	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(OtherActor);
 	if (!Interface) return;
 
-	Interface->ShowInteract(OtherActor, bFromSweep);
+	Interface->ShowInteract(OtherActor, true);
 
 	ABurnTheVillageNPC* InteractedWithNPC = Cast<ABurnTheVillageNPC>(OtherActor);
 	if (!InteractedWithNPC) return;
+	
+	//InteractedWithNPC->ShowInteract(OtherActor, bFromSweep);
+	
 	this->SetCurrentNPCIDThatIsTalkedTo(InteractedWithNPC->GetNPCId());
+	UE_LOG(LogTemp, Log, TEXT("%s says: CURRENTNPCIDTHATISTALKEDTO HAS BEEN SET"), TEXT(__FUNCTION__));
 }
 
 void ABurnTheVillageCharacter::OnTriggerSphereEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -141,6 +147,7 @@ void ABurnTheVillageCharacter::OnTriggerSphereEndOverlap(UPrimitiveComponent* Ov
 	{
 		bIsOverlappingInteractable = false;
 		CurrentInteractableActor = nullptr;
+		UE_LOG(LogTemp, Log, TEXT("%s says: Trigger Sphere has ESCAPED an interface"), TEXT(__FUNCTION__))
 	}
 	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(OtherActor);
 	if (!Interface) return;

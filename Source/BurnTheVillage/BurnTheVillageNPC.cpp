@@ -29,6 +29,14 @@ void ABurnTheVillageNPC::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (!Widget)
+	{
+		Widget = NewObject<UWidgetComponent>(this);
+		ensure(Widget);
+		Widget->SetupAttachment(RootComponent);
+		UE_LOG(LogTemp, Log, TEXT("%s says: Constructor failed to instantiate Widget, I did it instead."), TEXT(__FUNCTION__));
+	}
+
 }
 
 // Called every frame
@@ -53,8 +61,10 @@ FString ABurnTheVillageNPC::GetNPCId() const
 void ABurnTheVillageNPC::ShowInteract(AActor* Interactor, bool bIsInRange)
 {
 	if (Widget)
-		UE_LOG(LogTemp, Log, TEXT("%s says: Showing NPC's Interact Prompt widget..."), TEXT(__FUNCTION__))
-		Widget->SetHiddenInGame(!bIsInRange);
+	{
+		UE_LOG(LogTemp, Log, TEXT("%s says: Showing NPC's Interact Prompt widget..."), TEXT(__FUNCTION__));
+		Widget->SetVisibility(bIsInRange);
+	}
 }
 
 void ABurnTheVillageNPC::InitiateInteraction(AActor* Interactor)
@@ -63,12 +73,22 @@ void ABurnTheVillageNPC::InitiateInteraction(AActor* Interactor)
 
 	if (!(Widget->IsVisible())) return;
 
-	CreateWidget<UBurnTheVillageDialogueWidget>(GetWorld())->AddToViewport();	//	The parameter in CreateWidget is asking who has "ownership" over this widget instance. We give it to the world, because "ownership" here simply refers to when the destructor gets called. It will therefore get called when the level is destroyed.
+	if (!DialogueWidgetClass) return;
+	if (OngoingDialogueWidgetInstance) return;
+	OngoingDialogueWidgetInstance = CreateWidget<UBurnTheVillageDialogueWidget>(GetWorld(), DialogueWidgetClass);
+	OngoingDialogueWidgetInstance->AddToViewport();	//	The parameter in CreateWidget is asking who has "ownership" over this widget instance. We give it to the world, because "ownership" here simply refers to when the destructor gets called. It will therefore get called when the level is destroyed.
 }
 
 void ABurnTheVillageNPC::HideInteract(AActor* Interactor)
 {
 	if (Widget)
-		Widget->SetHiddenInGame(true);
+	{
+		Widget->SetVisibility(false);
+	}
+	if (OngoingDialogueWidgetInstance)
+	{
+		OngoingDialogueWidgetInstance->RemoveFromParent();
+		OngoingDialogueWidgetInstance = nullptr;
+	}
 }
 

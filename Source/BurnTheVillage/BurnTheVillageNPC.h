@@ -8,6 +8,7 @@
 #include "BurnTheVillageNPC.generated.h"
 
 class UWidgetComponent;
+class UBurnTheVillageDialogueWidget;
 
 UCLASS()
 class BURNTHEVILLAGE_API ABurnTheVillageNPC : public ACharacter, public IBurnTheVillageInteractInterface
@@ -43,6 +44,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	UCapsuleComponent* CapsuleTrigger;
 
+	UPROPERTY()
+	UBurnTheVillageDialogueWidget* OngoingDialogueWidgetInstance;
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "NPC|Dialogue")
 	FString GetNPCId() const;
@@ -55,4 +59,7 @@ public:
 
 	UFUNCTION()
 	virtual void HideInteract(AActor* Interactor) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPC|Dialogue")
+	TSubclassOf<UBurnTheVillageDialogueWidget> DialogueWidgetClass;
 };
