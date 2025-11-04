@@ -62,7 +62,7 @@ private:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Dialogue")
-	FString CurrentNPCIDThatIsTalkedTo;
+	FString CurrentNPCIdThatIsTalkedTo;
 
 	// The character class will need to instantiate the dialogue manager class in order to handle to dialogue logic.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Dialogue")
@@ -73,7 +73,13 @@ public:
 	UBurnTheVillageDialogueManager* GetDialogueManager() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Player|Dialogue")
-	void SetCurrentNPCIDThatIsTalkedTo(FString CurrentConversationNPC) { CurrentNPCIDThatIsTalkedTo = CurrentConversationNPC; }
+	void SetCurrentNPCIdThatIsTalkedTo(FString CurrentConversationNPC) { CurrentNPCIdThatIsTalkedTo = CurrentConversationNPC; }
+
+	UFUNCTION(BlueprintCallable, Category = "Player|Dialogue")
+	FString GetCurrentNPCIdThatIsTalkedTo() const { return CurrentNPCIdThatIsTalkedTo; }
+
+	UFUNCTION()
+	AActor* GetCurrentInteractableActor() const { return CurrentInteractableActor; }
 
 	UFUNCTION()
 	void OnTriggerSphereBeginOverlap(

@@ -10,15 +10,15 @@ bool UBurnTheVillageDialogueManager::LoadDialogueFromFile(const FString& FilePat
 {
 	//	We read the file, and take its contents as a string into JsonString.
 	FString JsonString;
-	if (!FFileHelper::LoadFileToString(JsonString, *FilePath)) { UE_LOG(LogTemp, Warning, TEXT("LoadDialogueFromFile(...): Filepath not found: %s"), *FilePath); return false; }
+	if (!FFileHelper::LoadFileToString(JsonString, *FilePath)) { UE_LOG(LogTemp, Warning, TEXT("%s says: Filepath not found: %s"), TEXT(__FUNCTION__), *FilePath); return false; }
 
 	//	Here, we do the deserialisation: we convert the JsonString into a FBurnTheVillageDialogueGraph type.
 	FBurnTheVillageDialogueGraph LoadedDialogueGraph;
-	if (!FJsonObjectConverter::JsonObjectStringToUStruct(JsonString, &LoadedDialogueGraph, 0, 0)) { UE_LOG(LogTemp, Warning, TEXT("LoadDialogueFromFile(...): JSON deserialisation failed")); return false; }
+	if (!FJsonObjectConverter::JsonObjectStringToUStruct(JsonString, &LoadedDialogueGraph, 0, 0)) { UE_LOG(LogTemp, Warning, TEXT("%s says: JSON deserialisation failed"), TEXT(__FUNCTION__)); return false; }
 
 	//	If the dialogue data has no NPC identification, we do not let it cross this border.
 	const FString& NPCIdFromFile = LoadedDialogueGraph.NPCId;
-	if (NPCIdFromFile.IsEmpty()) { UE_LOG(LogTemp, Warning, TEXT("LoadDialogueFromFile(...): NPCId is empty, aborting")); return false; }
+	if (NPCIdFromFile.IsEmpty()) { UE_LOG(LogTemp, Warning, TEXT("%s says: NPCId is empty, aborting"), TEXT(__FUNCTION__)); return false; }
 
 	//	We now take the edges from the list graph into our hash table graph, including the Id's as keys.
 	FDialogueData NewDialogueData;
@@ -33,16 +33,16 @@ bool UBurnTheVillageDialogueManager::LoadDialogueFromFile(const FString& FilePat
 
 	//	We add the newly populated hash table graph into our dialogue hash table, including the NPCId as its unique key.
 	AllDialogues.Add(NPCIdFromFile, NewDialogueData);
-	UE_LOG(LogTemp, Log, TEXT("LoadDialogueFromFile(): Succesfully loaded dialogue for NPC '%s' with %d nodes and %d edges."), *NPCIdFromFile, NewDialogueData.NodeMap.Num(), NewDialogueData.EdgeMap.Num());
+	UE_LOG(LogTemp, Log, TEXT("%s says: Succesfully loaded dialogue for NPC '%s' with %d nodes and %d edges."), TEXT(__FUNCTION__), *NPCIdFromFile, NewDialogueData.NodeMap.Num(), NewDialogueData.EdgeMap.Num());
 	return true;
 }
 
 bool UBurnTheVillageDialogueManager::InitiateConversationState(const FString& NPCId, const FString& StartNodeId)
 {
 	const FDialogueData* DialogueData = AllDialogues.Find(NPCId);
-	if (!DialogueData) { UE_LOG(LogTemp, Warning, TEXT("InitiateConversationState(...): No dialogue found for this NPCId: %s"), *NPCId); return false; }
+	if (!DialogueData) { UE_LOG(LogTemp, Warning, TEXT("%s says: No dialogue found for this NPCId: %s"), TEXT(__FUNCTION__), *NPCId); return false; }
 
-	if (!DialogueData->NodeMap.Contains(StartNodeId)) { UE_LOG(LogTemp, Warning, TEXT("InitiateConversationState(...): StartingNode %s not found for NPCId %s"), *StartNodeId, *NPCId); return false; }
+	if (!DialogueData->NodeMap.Contains(StartNodeId)) { UE_LOG(LogTemp, Warning, TEXT("%s says: StartingNode %s not found for NPCId %s"), TEXT(__FUNCTION__), *StartNodeId, *NPCId); return false; }
 
 	CurrentNPCId = NPCId;
 	CurrentNodeId = StartNodeId;
@@ -51,13 +51,13 @@ bool UBurnTheVillageDialogueManager::InitiateConversationState(const FString& NP
 
 bool UBurnTheVillageDialogueManager::GetCurrentNode(FBurnTheVillageDialogueNode& OutNode)
 {
-	if (CurrentNPCId.IsEmpty()) { UE_LOG(LogTemp, Warning, TEXT("GetCurrentNode(...): NPCId is empty")); return false; }
+	if (CurrentNPCId.IsEmpty()) { UE_LOG(LogTemp, Warning, TEXT("%s says: NPCId is empty"), TEXT(__FUNCTION__)); return false; }
 
 	const FDialogueData* DialogueData = AllDialogues.Find(CurrentNPCId);
-	if (!DialogueData) { UE_LOG(LogTemp, Warning, TEXT("GetCurrentNode(...): Did not find dialogue attached to NPCId: %s"), *CurrentNPCId); return false; }
+	if (!DialogueData) { UE_LOG(LogTemp, Warning, TEXT("%s says: Did not find dialogue attached to NPCId: %s"), TEXT(__FUNCTION__), *CurrentNPCId); return false; }
 
 	const FBurnTheVillageDialogueNode* Node = DialogueData->NodeMap.Find(CurrentNodeId);
-	if (!Node) { UE_LOG(LogTemp, Warning, TEXT("GetCurrentNode(...): Did not find node attached to NodeId: %s , for NPCId: %s"), *CurrentNodeId, *CurrentNPCId); return false; }
+	if (!Node) { UE_LOG(LogTemp, Warning, TEXT("%s says: Did not find node attached to NodeId: %s , for NPCId: %s"), TEXT(__FUNCTION__), *CurrentNodeId, *CurrentNPCId); return false; }
 
 	OutNode = *Node;
 	return true;
@@ -68,14 +68,14 @@ TArray<FBurnTheVillageDialogueEdge> UBurnTheVillageDialogueManager::GetCurrentPl
 	TArray<FBurnTheVillageDialogueEdge> Options;
 
 	FBurnTheVillageDialogueNode CurrentNode;
-	if (!GetCurrentNode(CurrentNode)) { UE_LOG(LogTemp, Warning, TEXT("GetCurrentPlayerDialogueOptions(): GetCurrentNode(...) failed, returning default")); return Options; }	//	This return might be an opportunity to set up a default dialogue return if process fails.
+	if (!GetCurrentNode(CurrentNode)) { UE_LOG(LogTemp, Warning, TEXT("%s says: GetCurrentNode(...) failed, returning default"), TEXT(__FUNCTION__)); return Options; }	//	This return might be an opportunity to set up a default dialogue return if process fails.
 
 	const FDialogueData* DialogueData = AllDialogues.Find(CurrentNPCId);
 
 	for (const FString& EdgeId : CurrentNode.OutgoingEdgeIds)
 	{
 		if (const FBurnTheVillageDialogueEdge* FoundEdge = DialogueData->EdgeMap.Find(EdgeId)) { Options.Add(*FoundEdge); }
-		else { UE_LOG(LogTemp, Warning, TEXT("GetCurrentPlayerDialogueOptions(): Node '%s' references non-existent EdgeId '%s'"), *CurrentNode.NodeId, *EdgeId); }
+		else { UE_LOG(LogTemp, Warning, TEXT("%s says: Node '%s' references non-existent EdgeId '%s'"), TEXT(__FUNCTION__), *CurrentNode.NodeId, *EdgeId); }
 	}
 	return Options;	//	The non default return.
 }
@@ -83,14 +83,14 @@ TArray<FBurnTheVillageDialogueEdge> UBurnTheVillageDialogueManager::GetCurrentPl
 bool UBurnTheVillageDialogueManager::AdvanceDialogue(const FString& EdgeId)
 {
 	const FDialogueData* DialogueData = AllDialogues.Find(CurrentNPCId);
-	if (!DialogueData) { UE_LOG(LogTemp, Warning, TEXT("ChooseOption(...): Failed to retrieve NPC dialogue")); return false; }
+	if (!DialogueData) { UE_LOG(LogTemp, Warning, TEXT("%s says: Failed to retrieve NPC dialogue"), TEXT(__FUNCTION__)); return false; }
 
 	const FBurnTheVillageDialogueEdge* ChosenEdge = DialogueData->EdgeMap.Find(EdgeId);
-	if (!ChosenEdge) { UE_LOG(LogTemp, Warning, TEXT("ChooseOption(...): Failed to retrieve ChosenEdge with EdgeId: %s"), *EdgeId); return false; }
+	if (!ChosenEdge) { UE_LOG(LogTemp, Warning, TEXT("%s says: Failed to retrieve ChosenEdge with EdgeId: %s"), TEXT(__FUNCTION__), *EdgeId); return false; }
 
 	if (!DialogueData->NodeMap.Contains(ChosenEdge->NextNodeId)) 
 	{ 
-		UE_LOG(LogTemp, Log, TEXT("ChooseOption(...): No Node found to come after ChosenEdge, ending dialogue"));
+		UE_LOG(LogTemp, Log, TEXT("%s says: No Node found to come after ChosenEdge, ending dialogue"), TEXT(__FUNCTION__));
 		EndDialogue();
 		return false;	//	Dialogue not advanced, therefore returns false.
 	}

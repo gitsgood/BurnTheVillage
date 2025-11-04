@@ -35,7 +35,7 @@ public:
 protected:
 	//	The NPCId variable from the dialogue jsons ought to also be used like their names, they will be the one and the same.
 	//	At this moment, design wise, it's up to us to manually name them to make sure everything works.
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "NPC|Dialogue")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPC|Dialogue")
 	FString NPCId;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
@@ -47,9 +47,15 @@ protected:
 	UPROPERTY()
 	UBurnTheVillageDialogueWidget* OngoingDialogueWidgetInstance;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPC|Dialogue")
+	TSubclassOf<UBurnTheVillageDialogueWidget> DialogueWidgetClass;
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "NPC|Dialogue")
 	FString GetNPCId() const;
+
+	UFUNCTION(BlueprintCallable, Category = "NPC|Dialogue")
+	void ClearOngoingDialogueWidgetPointer() { OngoingDialogueWidgetInstance = nullptr; }
 
 	UFUNCTION()
 	virtual void ShowInteract(AActor* Interactor, bool bIsInRange) override;
@@ -60,6 +66,12 @@ public:
 	UFUNCTION()
 	virtual void HideInteract(AActor* Interactor) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPC|Dialogue")
-	TSubclassOf<UBurnTheVillageDialogueWidget> DialogueWidgetClass;
+	UFUNCTION()
+	virtual void NotifyActorOnClicked(FKey ButtonPressed = EKeys::LeftMouseButton) override;
+
+	//UFUNCTION()
+	//virtual void NotifyActorBeginCursorOver() override;
+
+	//UFUNCTION()
+	//virtual void NotifyActorEndCursorOver() override;
 };

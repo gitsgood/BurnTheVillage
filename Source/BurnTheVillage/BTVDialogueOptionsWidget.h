@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "BurnTheVillageDialogue.h"						//	I swear I didnt want to do this, but you cant forward declare structs...
 #include "BTVDialogueOptionsWidget.generated.h"
 
 class UButton;
@@ -28,6 +29,9 @@ protected:
 	UPROPERTY()
 	UBurnTheVillageDialogueWidget* TheHandThatFedUs;
 
+	UPROPERTY()
+	FBurnTheVillageDialogueEdge OurEdge;
+
 	UFUNCTION()
 	void OnDialogueOptionClicked();
 
@@ -37,4 +41,10 @@ public:
 	//	This will be called by the actual mother at the moment of birth, letting her little babies find their way back into the womb.
 	UFUNCTION(BlueprintCallable, Category = "BTVDialogueOptions|Dialogue")
 	void SetTheHandThatFedUs(UBurnTheVillageDialogueWidget* InOurMother) { TheHandThatFedUs = InOurMother; }
+
+	UFUNCTION(BlueprintCallable, Category = "BTVDialogueOptions|Dialogue")
+	void SetOurEdge(const FBurnTheVillageDialogueEdge& InOurEdge);
+
+	UFUNCTION(BlueprintCallable, Category = "BTVDialogueOptions|Dialogue")
+	void SetPlayerDialogueText(FString InPlayerDialogueContent);
 };

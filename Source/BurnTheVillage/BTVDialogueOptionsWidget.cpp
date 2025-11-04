@@ -11,6 +11,7 @@
 void UBTVDialogueOptionsWidget::OnDialogueOptionClicked()
 {
 	if (!TheHandThatFedUs) { UE_LOG(LogTemp, Warning, TEXT("BTVDialogueOptionsWidget says: I do not know who my mother is, I can't fucking call her!")); return; }
+	TheHandThatFedUs->AdvanceDisplayedDialogue(OurEdge.EdgeId);
 }
 
 void UBTVDialogueOptionsWidget::NativeConstruct()
@@ -18,4 +19,14 @@ void UBTVDialogueOptionsWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	DialogueOption->OnClicked.AddDynamic(this, &UBTVDialogueOptionsWidget::OnDialogueOptionClicked);
+}
+
+void UBTVDialogueOptionsWidget::SetOurEdge(const FBurnTheVillageDialogueEdge& InOurEdge)
+{
+	OurEdge = InOurEdge;
+}
+
+void UBTVDialogueOptionsWidget::SetPlayerDialogueText(FString InPlayerDialogueContent)
+{
+	PlayerDialogue->SetText(FText::FromString(InPlayerDialogueContent));
 }

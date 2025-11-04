@@ -130,8 +130,9 @@ void ABurnTheVillagePlayerController::OnTouchReleased()
 
 void ABurnTheVillagePlayerController::OnInteractionPressed()
 {
-	UE_LOG(LogTemp, Log, TEXT("Interaction button pressed!"))
+	UE_LOG(LogTemp, Log, TEXT("%s says: Interaction button press is detected!"), TEXT(__FUNCTION__));
 	ABurnTheVillageCharacter* PlayerCharacter = Cast<ABurnTheVillageCharacter>(GetCharacter());
 	if (!PlayerCharacter) return;
 	PlayerCharacter->OnInteractionStarted();
+	UE_LOG(LogTemp, Log, TEXT("%s says: Succesfully called %s's OnInteractionStarted function!"), TEXT(__FUNCTION__), *PlayerCharacter->GetName());
 }

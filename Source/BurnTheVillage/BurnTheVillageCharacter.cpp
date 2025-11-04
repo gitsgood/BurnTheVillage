@@ -136,8 +136,8 @@ void ABurnTheVillageCharacter::OnTriggerSphereBeginOverlap(UPrimitiveComponent* 
 	
 	//InteractedWithNPC->ShowInteract(OtherActor, bFromSweep);
 	
-	this->SetCurrentNPCIDThatIsTalkedTo(InteractedWithNPC->GetNPCId());
-	UE_LOG(LogTemp, Log, TEXT("%s says: CURRENTNPCIDTHATISTALKEDTO HAS BEEN SET"), TEXT(__FUNCTION__));
+	this->SetCurrentNPCIdThatIsTalkedTo(InteractedWithNPC->GetNPCId());
+	UE_LOG(LogTemp, Log, TEXT("%s says: Current NPCId set to: %s"), TEXT(__FUNCTION__), *CurrentNPCIdThatIsTalkedTo);
 }
 
 void ABurnTheVillageCharacter::OnTriggerSphereEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -147,7 +147,8 @@ void ABurnTheVillageCharacter::OnTriggerSphereEndOverlap(UPrimitiveComponent* Ov
 	{
 		bIsOverlappingInteractable = false;
 		CurrentInteractableActor = nullptr;
-		UE_LOG(LogTemp, Log, TEXT("%s says: Trigger Sphere has ESCAPED an interface"), TEXT(__FUNCTION__))
+		CurrentNPCIdThatIsTalkedTo.Empty();
+		UE_LOG(LogTemp, Log, TEXT("%s says: Trigger Sphere has ESCAPED an interface and Current NPCId set to: %s"), TEXT(__FUNCTION__), *CurrentNPCIdThatIsTalkedTo);
 	}
 	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(OtherActor);
 	if (!Interface) return;
@@ -157,10 +158,11 @@ void ABurnTheVillageCharacter::OnTriggerSphereEndOverlap(UPrimitiveComponent* Ov
 
 void ABurnTheVillageCharacter::OnInteractionStarted()
 {
-	UE_LOG(LogTemp, Log, TEXT("%s says: Interaction action succesfully triggered"), TEXT(__FUNCTION__))
+	UE_LOG(LogTemp, Log, TEXT("%s says: Interaction action succesfully triggered"), TEXT(__FUNCTION__));
 	if (!bIsOverlappingInteractable || !CurrentInteractableActor) return;
 
 	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(CurrentInteractableActor);
 	if (!Interface) return;
 	Interface->InitiateInteraction(CurrentInteractableActor);
+	UE_LOG(LogTemp, Log, TEXT("%s says: Succesfully called Interface's InitiateInteraction()"), TEXT(__FUNCTION__));
 }

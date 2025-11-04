@@ -20,8 +20,9 @@ ABurnTheVillageNPC::ABurnTheVillageNPC()
 
 	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	Widget->SetupAttachment(RootComponent);
-	//Widget->SetVisibility(false);
 
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 }
 
 // Called when the game starts or when spawned
@@ -91,4 +92,32 @@ void ABurnTheVillageNPC::HideInteract(AActor* Interactor)
 		OngoingDialogueWidgetInstance = nullptr;
 	}
 }
+
+void ABurnTheVillageNPC::NotifyActorOnClicked(FKey ButtonPressed)
+{
+	if (!Widget) 
+	{
+		UE_LOG(LogTemp, Log, TEXT("%s says: NPC received click, but interaction can't happen..."), TEXT(__FUNCTION__));
+		return;
+	}
+	Super::NotifyActorOnClicked(ButtonPressed);
+	InitiateInteraction(this);
+}
+
+//void ABurnTheVillageNPC::NotifyActorBeginCursorOver()
+//{
+//	Super::NotifyActorBeginCursorOver();
+//	UE_LOG(LogTemp, Log, TEXT("%s says: NPC detected hover beginning..."), TEXT(__FUNCTION__));
+//
+//	GetMesh()->SetRenderCustomDepth(true);
+//	GetMesh()->SetCustomDepthStencilValue(100);
+//}
+//
+//void ABurnTheVillageNPC::NotifyActorEndCursorOver()
+//{
+//	Super::NotifyActorEndCursorOver();
+//	UE_LOG(LogTemp, Log, TEXT("%s says: NPC detected hover ending..."), TEXT(__FUNCTION__));
+//
+//	GetMesh()->SetRenderCustomDepth(false);
+//}
 

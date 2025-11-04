@@ -12,6 +12,9 @@ class ABurnTheVillageCharacter;
 class ABurnTheVillageNPC;
 class UBurnTheVillageDialogueManager;
 
+class UTextBlock;
+class UVerticalBox;
+
 /**
  * 
  */
@@ -28,13 +31,34 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DialogueWidget|Dialogue")
 	ABurnTheVillageCharacter* PlayerInstance;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DialogueWidget|Dialogue")
+	UBurnTheVillageDialogueManager* DialogueManager;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "DialogueWidget|Dialogue")
+	TSubclassOf<UBTVDialogueOptionsWidget> DialogueOptionsWidget;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* NPCText;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* NPCName;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UVerticalBox* PlayerDialogueOptionContainer;
+
+public:
 	//	At this moment in time, we're moving the blueprint nonsense into real, hard, code.
 	virtual void NativeConstruct() override;
 
-public:
 	UFUNCTION(BlueprintCallable, Category = "DialogueWidget|Dialogue")
 	ABurnTheVillageCharacter* GetPlayerCharacterReference(const UObject* WorldContextObject) const;
 
 	UFUNCTION(BlueprintCallable, Category = "DialogueWidget|Dialogue")
-	void DisplayDialogueContent(TArray<UBTVDialogueOptionsWidget*> PlayerDialogueOptions, ABurnTheVillageNPC* NPCThatIsBeingDialoguedWith);
+	void DisplayDialogueContent();
+
+	UFUNCTION(BlueprintCallable, Category = "DialogueWidget|Dialogue")
+	void ClearPlayerOptions();
+
+	UFUNCTION(BlueprintCallable, Category = "DialogueWidget|Dialogue")
+	void AdvanceDisplayedDialogue(const FString ChosenEdgeId);
 };
