@@ -14,16 +14,16 @@ struct FAbstractNodeForNavigation
 	// I have implicit constructor because Matt hates constructors for no good reason
 };
 
-//struct GremlinsAStarNode
-//{
-//	int32 CurrentNodeIndex;
-//	int32 ParentNodeIndex;
-//	float RealCost;														//	also known as g cost
-//	float HeuristicsCost;												//	also known as h cost
-//	float EstimatedCost();	//	also known as f cost
-//	GremlinsAStarNode() = default;
-//	//GremlinsAStarNode(int32 CNI, int PNI, float RC, float HC)
-//};
+struct GremlinsAStarNode
+{
+	int32 CurrentNodeIndex;
+	int32 ParentNodeIndex;
+	float RealCost;														//	also known as g cost
+	float HeuristicsCost;												//	also known as h cost
+	float EstimatedCost();	//	also known as f cost
+	GremlinsAStarNode() = default;
+	GremlinsAStarNode(int32 CNI, int PNI, float RC, float HC) : CurrentNodeIndex(CNI), ParentNodeIndex(PNI), RealCost(RC), HeuristicsCost(HC) {};
+};
 
 class PathfinderModule
 {
@@ -33,10 +33,10 @@ public:
 public: //	list of members, public because fuck access rights
 
 	//	How far apart individual nodes are
-	float NodeSpacingSampleRate = 75.f;
+	float NodeSpacingSampleRate = 65.f;
 
 	//	How dense the connection is suppoosed to be, higher = denser, 0 = unconnected
-	float ConnectionDensity = 1.5f;
+	float ConnectionDensity = 1.6f;
 
 public: //	list of methods, public because fuck accesss rights
 
@@ -48,11 +48,12 @@ public: //	list of methods, public because fuck accesss rights
 	//	overload of above for debugging purposes
 	TArray<FAbstractNodeForNavigation> BuildGraph(const TArray<FVector>& Points, float ConnectionRadius, UWorld* World);
 
+
 	//	method to find the closest node to player's position to bootstrap movement
-	//int32 FindClosestNode(const FVector& Pos, const TArray<FAbstractNodeForNavigation>& Graph);
+	int32 FindClosestNode(const FVector& Pos, const TArray<FAbstractNodeForNavigation>& Graph);
 
 	//	method to actually pathfind, you know, the actual reason why all this claptrap exists instead of just being relegated to UNavigationSystemV1 that already exists and does all this better
-	//TArray<int32> GremlinsHikingAdventure(const TArray<FAbstractNodeForNavigation>& Graph, int32 StartIndex, int32 GoalIndex);
+	TArray<int32> GremlinsHikingAdventure(const TArray<FAbstractNodeForNavigation>& Graph, int32 StartIndex, int32 GoalIndex);
 
 
 	// +++BELOW THIS LINE IS LEGACY TRASH THAT EXISTS SOLELY TO POINT OUT HOW PSYCHOTIC MY THOUGHT PROCESS WAS!+++    **********************************************************************************************

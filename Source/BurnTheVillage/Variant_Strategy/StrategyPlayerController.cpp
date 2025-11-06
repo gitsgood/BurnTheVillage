@@ -754,7 +754,7 @@ void AStrategyPlayerController::BeginPlay()
 	}
 
 	//  ALMOST Call Matt a good boi in case he didn't
-	UE_LOG(LogTemp, Warning, TEXT("NavMesh found, good job, you didn't forget!"), *NavMesh->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("NavMesh found, good job, you didn't forget! %s"), *NavMesh->GetName());
 
 	//  Fetch NavMesh data and store it in NavMesh directly from the world, making everything above this line pointless
 	NavMesh = Cast<ARecastNavMesh>(FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld())->GetDefaultNavDataInstance());
