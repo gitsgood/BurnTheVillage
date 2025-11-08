@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "PathfinderModule.h"
 #include "StrategyPlayerController.generated.h"
 
 class AStrategyPawn;
@@ -285,4 +286,10 @@ protected:
 
 	/** Resets the interaction flag */
 	void ResetInteraction();
+
+	// +++ BELOW THIS LINE STARTS MATT'S MADNESS. FLEE WHILE YOU STILL CAN +++
+
+	public:
+		virtual void BeginPlay() override;
+
 };

@@ -723,3 +723,57 @@ void AStrategyPlayerController::ResetInteraction()
 {
 	bAllowInteraction = true;
 }
+
+// +++ BELOW THIS LINE STARTS MATT'S MADNESS. FLEE WHILE YOU STILL CAN +++
+
+void AStrategyPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//  Initial sanity check log to ensure controller is working
+	UE_LOG(LogTemp, Warning, TEXT("Controller works."), *GetName());
+
+	if (GetPawn())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Controller molests pawn"), *GetPawn()->GetName());
+	}
+
+	if (!GetWorld()) return;
+
+	//  Fetch World's navigation data in its entirety
+	UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	if (!NavSys) return;
+
+	//  Find Navmesh among that trash
+	ARecastNavMesh* NavMesh = Cast<ARecastNavMesh>(NavSys->GetDefaultNavDataInstance());
+	if (!NavMesh)
+	{
+		// Call Matt retarded if case he forgot to include NavMesh
+		UE_LOG(LogTemp, Error, TEXT("No NavMesh found! RETARD!"));
+		return;
+	}
+
+	//  ALMOST Call Matt a good boi in case he didn't
+	UE_LOG(LogTemp, Warning, TEXT("NavMesh found, good job, you didn't forget! %s"), *NavMesh->GetName());
+
+	//  Fetch NavMesh data and store it in NavMesh directly from the world, making everything above this line pointless
+	NavMesh = Cast<ARecastNavMesh>(FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld())->GetDefaultNavDataInstance());
+
+	if (!NavMesh) return;
+
+	//  Get size of the NavMesh
+	FBox NagivationVolume = NavMesh->GetNavMeshBounds();
+
+	// Instantiate new generation of Pathfinding Gremlin who does ALL the pathfinding
+	PathfinderModule PathingGremlin;
+
+	//  Gerate array of Vectors which the Pathfinding Gremlin then populates with nodes based on samples
+	TArray<FVector> NavPoints = PathingGremlin.SampleNodesOverWholeNavMesh(GetWorld(), PathingGremlin.NodeSpacingSampleRate);
+
+	//  Make the Gremlin construct a fucking graph out of the samples
+	float NodeConnectionRadius = PathingGremlin.NodeSpacingSampleRate * PathingGremlin.ConnectionDensity;
+	TArray<FAbstractNodeForNavigation> Graph = PathingGremlin.BuildGraph(NavPoints, NodeConnectionRadius, GetWorld());
+
+	//  attach a number to just how wasteful Matt is with processing cycles 
+	UE_LOG(LogTemp, Warning, TEXT("Graph built with %d nodes."), Graph.Num());
+}
