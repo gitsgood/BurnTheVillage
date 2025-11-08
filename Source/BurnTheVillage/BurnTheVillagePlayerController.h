@@ -14,8 +14,9 @@ class UInputAction;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 /**
- *  Player controller for a top-down perspective game.
- *  Implements point and click based controls
+ * @brief Player controller for a top-down game. In it we bind the interact action enhanced input.
+ * 
+ * We also intend to implement Matt's A* right here.
  */
 UCLASS(abstract)
 class ABurnTheVillagePlayerController : public APlayerController
@@ -43,10 +44,6 @@ protected:
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* SetDestinationTouchAction;
-
-	//	HUMAN ADDITION IS RIGHT HERE, RIGHT HEEEEEREEE <-----------------------------------------------------------------------------------------------------------------
-	UPROPERTY(EditAnywhere, Category = "Input|Interaction")
-	UInputAction* InteractionAction;
 
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -77,7 +74,19 @@ protected:
 	void OnTouchTriggered();
 	void OnTouchReleased();
 
-	//	HUMAN ADDITION IS ALSO HERE --------------------------------------------------------------------------------------------------------------------------------------
+	//	HUMAN ADDITION IS RIGHT HERE, RIGHT HEEEEEREEE <-----------------------------------------------------------------------------------------------------------------
+
+	/*
+	* @brief The interact action. We are still unsure if we want to trigger it with a mouse click or a button press.
+	* 
+	* We currently support both.
+	*/
+	UPROPERTY(EditAnywhere, Category = "Input|Interaction")
+	TObjectPtr<UInputAction> InteractionAction;
+
+	/**
+	* @brief Uses the GetCharacter controller method, casts into our own player character class and then simply calls interaction function from the player.
+	*/
 	void OnInteractionPressed();
 };
 

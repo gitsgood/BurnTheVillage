@@ -7,7 +7,11 @@
 #include "BurnTheVillageInteractPrompt.generated.h"
 
 /**
+ * @brief Parent widget of the interact prompt widget.
  * 
+ * -The class is currently unecessary, however keeping it around might come in handy eventually.
+ * 
+ * @see ABurnTheVillageNPC::InteractPromptWidgetComponent for where this is used.
  */
 UCLASS()
 class BURNTHEVILLAGE_API UBurnTheVillageInteractPrompt : public UUserWidget
@@ -15,8 +19,9 @@ class BURNTHEVILLAGE_API UBurnTheVillageInteractPrompt : public UUserWidget
 	GENERATED_BODY()
 	
 protected:
+
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* InteractText;
+	TObjectPtr<UTextBlock> InteractText;
 
 public:
 	virtual void NativeConstruct() override;

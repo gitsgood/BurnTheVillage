@@ -6,6 +6,7 @@
 #include "Components/CapsuleComponent.h"	//	Decided I might as well construct the full thing in here, because why the fuck not.
 #include "BurnTheVillageDialogueWidget.h"	//	Turns out the NPC's are responsible for creating the dialogue widget.
 #include "BurnTheVillageInteractPrompt.h"	//	Every NPC has their own little pretty interact prompt that shows up.
+#include "BTVLoggingControlMacro.h"			//	This header contains ONLY a conditional macro enabling or disabling logging for convenience and eventually performance.
 
 // Sets default values
 ABurnTheVillageNPC::ABurnTheVillageNPC()
@@ -13,13 +14,13 @@ ABurnTheVillageNPC::ABurnTheVillageNPC()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	CapsuleTrigger = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleTrigger"));
-	CapsuleTrigger->SetupAttachment(RootComponent);
-	CapsuleTrigger->SetWorldScale3D(FVector(3.3875, 3.3875, 3.3875));
-	CapsuleTrigger->SetGenerateOverlapEvents(true);
+	DialogueTriggerCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("DialogueTriggerCapsule"));
+	DialogueTriggerCapsule->SetupAttachment(RootComponent);
+	DialogueTriggerCapsule->SetWorldScale3D(FVector(3.3875, 3.3875, 3.3875));
+	DialogueTriggerCapsule->SetGenerateOverlapEvents(true);
 
-	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
-	Widget->SetupAttachment(RootComponent);
+	InteractPromptWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
+	InteractPromptWidgetComponent->SetupAttachment(RootComponent);
 
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
@@ -30,61 +31,54 @@ void ABurnTheVillageNPC::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!Widget)
+	if (!InteractPromptWidgetComponent)
 	{
-		Widget = NewObject<UWidgetComponent>(this);
-		ensure(Widget);
-		Widget->SetupAttachment(RootComponent);
-		UE_LOG(LogTemp, Log, TEXT("%s says: Constructor failed to instantiate Widget, I did it instead."), TEXT(__FUNCTION__));
+		InteractPromptWidgetComponent = NewObject<UWidgetComponent>(this);
+		ensure(InteractPromptWidgetComponent);
+		InteractPromptWidgetComponent->SetupAttachment(RootComponent);
+		BTV_LOG(LogTemp, Warning, TEXT("%s says: Constructor failed to instantiate Widget, I did it instead."), TEXT(__FUNCTION__));
 	}
 
 }
 
-// Called every frame
-void ABurnTheVillageNPC::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void ABurnTheVillageNPC::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
+#pragma region Dialogue
 
 FString ABurnTheVillageNPC::GetNPCId() const
 {
 	return NPCId;
 }
 
+#pragma endregion
+
+#pragma region Interaction
+
 void ABurnTheVillageNPC::ShowInteract(AActor* Interactor, bool bIsInRange)
 {
-	if (Widget)
+	if (InteractPromptWidgetComponent)
 	{
-		UE_LOG(LogTemp, Log, TEXT("%s says: Showing NPC's Interact Prompt widget..."), TEXT(__FUNCTION__));
-		Widget->SetVisibility(bIsInRange);
+		BTV_LOG(LogTemp, Log, TEXT("%s says: Showing NPC's Interact Prompt widget..."), TEXT(__FUNCTION__));
+		InteractPromptWidgetComponent->SetVisibility(bIsInRange);
 	}
 }
 
 void ABurnTheVillageNPC::InitiateInteraction(AActor* Interactor)
 {
-	if (!Widget) return;
-
-	if (!(Widget->IsVisible())) return;
-
+	if (!InteractPromptWidgetComponent) return;
+	if (!(InteractPromptWidgetComponent->IsVisible())) return;
 	if (!DialogueWidgetClass) return;
 	if (OngoingDialogueWidgetInstance) return;
+	
 	OngoingDialogueWidgetInstance = CreateWidget<UBurnTheVillageDialogueWidget>(GetWorld(), DialogueWidgetClass);
-	OngoingDialogueWidgetInstance->AddToViewport();	//	The parameter in CreateWidget is asking who has "ownership" over this widget instance. We give it to the world, because "ownership" here simply refers to when the destructor gets called. It will therefore get called when the level is destroyed.
+	//	The parameter in CreateWidget is asking who has "ownership" over this widget instance. We give it to the world, because "ownership" here simply refers to when the destructor gets called. It will therefore get called when the level is destroyed.
+	
+	OngoingDialogueWidgetInstance->AddToViewport();	
 }
 
 void ABurnTheVillageNPC::HideInteract(AActor* Interactor)
 {
-	if (Widget)
+	if (InteractPromptWidgetComponent)
 	{
-		Widget->SetVisibility(false);
+		InteractPromptWidgetComponent->SetVisibility(false);
 	}
 	if (OngoingDialogueWidgetInstance)
 	{
@@ -95,29 +89,36 @@ void ABurnTheVillageNPC::HideInteract(AActor* Interactor)
 
 void ABurnTheVillageNPC::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (!Widget) 
+	Super::NotifyActorOnClicked(ButtonPressed);
+
+	if (!InteractPromptWidgetComponent)
 	{
-		UE_LOG(LogTemp, Log, TEXT("%s says: NPC received click, but interaction can't happen..."), TEXT(__FUNCTION__));
 		return;
 	}
-	Super::NotifyActorOnClicked(ButtonPressed);
+	if (!InteractPromptWidgetComponent->IsVisible())
+	{
+		BTV_LOG(LogTemp, Warning, TEXT("%s says: NPC received click, but interaction can't happen..."), TEXT(__FUNCTION__));
+		return;
+	}
+	BTV_LOG(LogTemp, Log, TEXT("%s says: NPC received click, InitiatingInteraction..."), TEXT(__FUNCTION__));
 	InitiateInteraction(this);
 }
 
 //void ABurnTheVillageNPC::NotifyActorBeginCursorOver()
 //{
 //	Super::NotifyActorBeginCursorOver();
-//	UE_LOG(LogTemp, Log, TEXT("%s says: NPC detected hover beginning..."), TEXT(__FUNCTION__));
+//	MY_LOG(LogTemp, Log, TEXT("%s says: NPC detected hover beginning..."), TEXT(__FUNCTION__));
 //
 //	GetMesh()->SetRenderCustomDepth(true);
 //	GetMesh()->SetCustomDepthStencilValue(100);
 //}
-//
+
 //void ABurnTheVillageNPC::NotifyActorEndCursorOver()
 //{
 //	Super::NotifyActorEndCursorOver();
-//	UE_LOG(LogTemp, Log, TEXT("%s says: NPC detected hover ending..."), TEXT(__FUNCTION__));
+//	MY_LOG(LogTemp, Log, TEXT("%s says: NPC detected hover ending..."), TEXT(__FUNCTION__));
 //
 //	GetMesh()->SetRenderCustomDepth(false);
 //}
 
+#pragma endregion

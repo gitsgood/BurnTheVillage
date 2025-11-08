@@ -15,9 +15,12 @@
 #include "Components/SphereComponent.h"			//	A TRIGGER SPHERE, IN CEE PEE PEE
 #include "BurnTheVillageInteractInterface.h"	//	Our interaction interface, to let the functions here know what the fuck we're talking about when we ask if it's implemented elsewhere.
 #include "BurnTheVillageNPC.h"					//	Interaction involves casting into an NPC, granting us ACCESS TO THEIR VALUABLE ID (and functions).
+#include "BTVLoggingControlMacro.h"				//	This header contains ONLY a conditional macro enabling or disabling logging for convenience and eventually performance.
 
 ABurnTheVillageCharacter::ABurnTheVillageCharacter()
 {
+#pragma region Default Template code
+
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -51,16 +54,18 @@ ABurnTheVillageCharacter::ABurnTheVillageCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
+#pragma endregion
+
 	//	I HAVE NO TRIGGER SPHERE AND I MUST TRIGGER
-	SphereTrigger = CreateDefaultSubobject<USphereComponent>(TEXT("SphereTrigger"));
-	SphereTrigger->SetupAttachment(RootComponent);
-	SphereTrigger->SetSphereRadius(32.f);
-	SphereTrigger->SetLineThickness(0.f);
-	SphereTrigger->SetWorldScale3D(FVector(5.f, 5.f, 5.f));
-	SphereTrigger->SetGenerateOverlapEvents(true);
-	SphereTrigger->SetCollisionProfileName(FName("Trigger"));
-	SphereTrigger->OnComponentBeginOverlap.AddDynamic(this, &ABurnTheVillageCharacter::OnTriggerSphereBeginOverlap);
-	SphereTrigger->OnComponentEndOverlap.AddDynamic(this, &ABurnTheVillageCharacter::OnTriggerSphereEndOverlap);
+	DialogueTriggerSphere = CreateDefaultSubobject<USphereComponent>(TEXT("DialogueTriggerSphere"));
+	DialogueTriggerSphere->SetupAttachment(RootComponent);
+	DialogueTriggerSphere->SetSphereRadius(32.f);
+	DialogueTriggerSphere->SetLineThickness(0.f);
+	DialogueTriggerSphere->SetWorldScale3D(FVector(5.f, 5.f, 5.f));
+	DialogueTriggerSphere->SetGenerateOverlapEvents(true);
+	DialogueTriggerSphere->SetCollisionProfileName(FName("Trigger"));
+	DialogueTriggerSphere->OnComponentBeginOverlap.AddDynamic(this, &ABurnTheVillageCharacter::OnDialogueTriggerSphereBeginOverlap);
+	DialogueTriggerSphere->OnComponentEndOverlap.AddDynamic(this, &ABurnTheVillageCharacter::OnDialogueTriggerSphereEndOverlap);
 
 	//	WE WILL INSTANTIATE AN OBJECT OF TYPE DIALOGUE MANAGER IN THE CONSTRUCTOR
 	DialogueManager = CreateDefaultSubobject<UBurnTheVillageDialogueManager>(TEXT("DialogueManager"));	//	As I understand it, we create a default object (within the character object, hence the "subObject").
@@ -73,6 +78,7 @@ void ABurnTheVillageCharacter::BeginPlay()
 	//	For some fucking reason, the constructor failed to create the manager even though it used to work, so this line will try again if the other fails. THE DIALOGUE MANAGER MUST EXIST NO MATTER WHAT.
 	if (!DialogueManager)
 	{
+		BTV_LOG(LogTemp, Warning, TEXT("%s says: constructor failed to instantiate DialogueManager, I'll attempt to do this instead."), TEXT(__FUNCTION__));
 		DialogueManager = NewObject<UBurnTheVillageDialogueManager>(this);
 		ensure(DialogueManager);
 	}
@@ -89,41 +95,40 @@ void ABurnTheVillageCharacter::BeginPlay()
 	{
 		if (!DialogueManager)
 		{
-			UE_LOG(LogTemp, Error, TEXT("%s says: constructor failed to instantiate a dialogue manager class."), TEXT(__FUNCTION__))
+			BTV_LOG(LogTemp, Error, TEXT("%s says: constructor and BeginPlay failed to instantiate a dialogue manager class."), TEXT(__FUNCTION__));
 			break;
 		}
 		FString DialoguesFilePath{ FPaths::ProjectContentDir() + TEXT("OurFuckingFolder/DialogueJSONs/") + DialogueJsonPath};
 		DialogueManager->LoadDialogueFromFile(DialoguesFilePath);
-		UE_LOG(LogTemp, Warning, TEXT("%s says: Added contents of %s into DialogueManager"), TEXT(__FUNCTION__), *DialoguesFilePath)
+		BTV_LOG(LogTemp, Warning, TEXT("%s says: Added contents of %s into DialogueManager"), TEXT(__FUNCTION__), *DialoguesFilePath)
 	}
 }
 
-void ABurnTheVillageCharacter::Tick(float DeltaSeconds)
-{
-    Super::Tick(DeltaSeconds);
-
-	// stub
-}
+#pragma region Dialogue
 
 UBurnTheVillageDialogueManager* ABurnTheVillageCharacter::GetDialogueManager() const
 {
 	if (!DialogueManager)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s says: DIALOGUE MANAGER HAS NOT BEEN SET"), TEXT(__FUNCTION__));
+		BTV_LOG(LogTemp, Error, TEXT("%s says: DIALOGUE MANAGER HAS NOT BEEN SET"), TEXT(__FUNCTION__));
 		return nullptr;
 	}
-	return DialogueManager;
+	return DialogueManager.Get();
 }
 
-void ABurnTheVillageCharacter::OnTriggerSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+#pragma endregion
+
+#pragma region Interaction
+
+void ABurnTheVillageCharacter::OnDialogueTriggerSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (!OtherActor) return;
 	if (OtherActor == this) return;
 	if (!OtherActor->Implements<UBurnTheVillageInteractInterface>()) return;
 	bIsOverlappingInteractable = true;
 	CurrentInteractableActor = OtherActor;
-	UE_LOG(LogTemp, Log, TEXT("%s says: Trigger Sphere has detected an interface, collided with %s which is located at %s"), TEXT(__FUNCTION__), *OtherActor->GetName(), *OtherActor->GetActorLocation().ToString())
-	
+	BTV_LOG(LogTemp, Log, TEXT("%s says: DialogueTriggerSphere has detected an interface, collided with %s which is located at %s"), TEXT(__FUNCTION__), *OtherActor->GetName(), *OtherActor->GetActorLocation().ToString());
+
 	//	Some people say "cast to interface for blablabla". I say no to that. I want this cast for the most precious thing of all... THEIR FUCKING ID.
 	//	Calling the function from interface, just like god intended. Pardon my past self, I have now seen the light.
 	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(OtherActor);
@@ -133,14 +138,14 @@ void ABurnTheVillageCharacter::OnTriggerSphereBeginOverlap(UPrimitiveComponent* 
 
 	ABurnTheVillageNPC* InteractedWithNPC = Cast<ABurnTheVillageNPC>(OtherActor);
 	if (!InteractedWithNPC) return;
-	
+
 	//InteractedWithNPC->ShowInteract(OtherActor, bFromSweep);
-	
+
 	this->SetCurrentNPCIdThatIsTalkedTo(InteractedWithNPC->GetNPCId());
-	UE_LOG(LogTemp, Log, TEXT("%s says: Current NPCId set to: %s"), TEXT(__FUNCTION__), *CurrentNPCIdThatIsTalkedTo);
+	BTV_LOG(LogTemp, Log, TEXT("%s says: Current NPCId set to: %s"), TEXT(__FUNCTION__), *CurrentNPCIdThatIsTalkedTo);
 }
 
-void ABurnTheVillageCharacter::OnTriggerSphereEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void ABurnTheVillageCharacter::OnDialogueTriggerSphereEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (!OtherActor || !OtherActor->Implements<UBurnTheVillageInteractInterface>()) return;
 	if (OtherActor == CurrentInteractableActor)
@@ -148,7 +153,7 @@ void ABurnTheVillageCharacter::OnTriggerSphereEndOverlap(UPrimitiveComponent* Ov
 		bIsOverlappingInteractable = false;
 		CurrentInteractableActor = nullptr;
 		CurrentNPCIdThatIsTalkedTo.Empty();
-		UE_LOG(LogTemp, Log, TEXT("%s says: Trigger Sphere has ESCAPED an interface and Current NPCId set to: %s"), TEXT(__FUNCTION__), *CurrentNPCIdThatIsTalkedTo);
+		BTV_LOG(LogTemp, Log, TEXT("%s says: DialogueTriggerSphere has ESCAPED an interface and Current NPCId set to: %s"), TEXT(__FUNCTION__), *CurrentNPCIdThatIsTalkedTo);
 	}
 	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(OtherActor);
 	if (!Interface) return;
@@ -158,11 +163,13 @@ void ABurnTheVillageCharacter::OnTriggerSphereEndOverlap(UPrimitiveComponent* Ov
 
 void ABurnTheVillageCharacter::OnInteractionStarted()
 {
-	UE_LOG(LogTemp, Log, TEXT("%s says: Interaction action succesfully triggered"), TEXT(__FUNCTION__));
+	BTV_LOG(LogTemp, Log, TEXT("%s says: Interaction action succesfully triggered"), TEXT(__FUNCTION__));
 	if (!bIsOverlappingInteractable || !CurrentInteractableActor) return;
 
 	IBurnTheVillageInteractInterface* Interface = Cast<IBurnTheVillageInteractInterface>(CurrentInteractableActor);
 	if (!Interface) return;
 	Interface->InitiateInteraction(CurrentInteractableActor);
-	UE_LOG(LogTemp, Log, TEXT("%s says: Succesfully called Interface's InitiateInteraction()"), TEXT(__FUNCTION__));
+	BTV_LOG(LogTemp, Log, TEXT("%s says: Succesfully called Interface's InitiateInteraction()"), TEXT(__FUNCTION__));
 }
+
+#pragma endregion

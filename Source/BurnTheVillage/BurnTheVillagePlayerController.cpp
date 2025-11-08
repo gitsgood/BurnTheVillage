@@ -13,6 +13,7 @@
 #include "Engine/LocalPlayer.h"
 #include "BurnTheVillage.h"
 #include "BurnTheVillageCharacter.h"	//	I include this so that when we GetLocalPlayer, we cast it into this to call the actual implementation of the interact function.
+#include "BTVLoggingControlMacro.h"			//	This header contains ONLY a conditional macro enabling or disabling logging for convenience and eventually performance.
 
 ABurnTheVillagePlayerController::ABurnTheVillagePlayerController()
 {
@@ -130,9 +131,9 @@ void ABurnTheVillagePlayerController::OnTouchReleased()
 
 void ABurnTheVillagePlayerController::OnInteractionPressed()
 {
-	UE_LOG(LogTemp, Log, TEXT("%s says: Interaction button press is detected!"), TEXT(__FUNCTION__));
+	BTV_LOG(LogTemp, Log, TEXT("%s says: Interaction button press is detected!"), TEXT(__FUNCTION__));
 	ABurnTheVillageCharacter* PlayerCharacter = Cast<ABurnTheVillageCharacter>(GetCharacter());
 	if (!PlayerCharacter) return;
 	PlayerCharacter->OnInteractionStarted();
-	UE_LOG(LogTemp, Log, TEXT("%s says: Succesfully called %s's OnInteractionStarted function!"), TEXT(__FUNCTION__), *PlayerCharacter->GetName());
+	BTV_LOG(LogTemp, Log, TEXT("%s says: Succesfully called %s's OnInteractionStarted function!"), TEXT(__FUNCTION__), *PlayerCharacter->GetName());
 }
