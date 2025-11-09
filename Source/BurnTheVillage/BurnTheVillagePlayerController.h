@@ -88,6 +88,9 @@ protected:
 	* @brief Uses the GetCharacter controller method, casts into our own player character class and then simply calls interaction function from the player.
 	*/
 	void OnInteractionPressed();
+
+public:
+	virtual void BeginPlay() override;
 };
 
 

@@ -5,15 +5,18 @@
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
-#include "BurnTheVillageCharacter.h"
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "BurnTheVillage.h"
-#include "BurnTheVillageCharacter.h"	//	I include this so that when we GetLocalPlayer, we cast it into this to call the actual implementation of the interact function.
+#include "BurnTheVillageCharacter.h"		//	I include this so that when we GetLocalPlayer, we cast it into this to call the actual implementation of the interact function.
 #include "BTVLoggingControlMacro.h"			//	This header contains ONLY a conditional macro enabling or disabling logging for convenience and eventually performance.
+
+#include "NavigationSystem.h"				//	Matt's A* requires this...
+#include "Engine/OverlapResult.h"			//	and this...
+#include "PathfinderModule.h"				//	and this one, which he wrote like a chad.
 
 ABurnTheVillagePlayerController::ABurnTheVillagePlayerController()
 {
@@ -136,4 +139,56 @@ void ABurnTheVillagePlayerController::OnInteractionPressed()
 	if (!PlayerCharacter) return;
 	PlayerCharacter->OnInteractionStarted();
 	BTV_LOG(LogTemp, Log, TEXT("%s says: Succesfully called %s's OnInteractionStarted function!"), TEXT(__FUNCTION__), *PlayerCharacter->GetName());
+}
+
+void ABurnTheVillagePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//  Initial sanity check log to ensure controller is working
+	BTV_LOG(LogTemp, Warning, TEXT("Controller works."), *GetName());
+
+	if (GetPawn())
+	{
+		BTV_LOG(LogTemp, Warning, TEXT("Controller molests pawn"), *GetPawn()->GetName());
+	}
+
+	if (!GetWorld()) return;
+
+	//  Fetch World's navigation data in its entirety
+	UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	if (!NavSys) return;
+
+	//  Find Navmesh among that trash
+	ARecastNavMesh* NavMesh = Cast<ARecastNavMesh>(NavSys->GetDefaultNavDataInstance());
+	if (!NavMesh)
+	{
+		// Call Matt retarded if case he forgot to include NavMesh
+		BTV_LOG(LogTemp, Error, TEXT("No NavMesh found! RETARD!"));
+		return;
+	}
+
+	//  ALMOST Call Matt a good boi in case he didn't
+	BTV_LOG(LogTemp, Warning, TEXT("NavMesh found, good job, you didn't forget! %s"), *NavMesh->GetName());
+
+	//  Fetch NavMesh data and store it in NavMesh directly from the world, making everything above this line pointless
+	NavMesh = Cast<ARecastNavMesh>(FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld())->GetDefaultNavDataInstance());
+
+	if (!NavMesh) return;
+
+	//  Get size of the NavMesh
+	FBox NagivationVolume = NavMesh->GetNavMeshBounds();
+
+	// Instantiate new generation of Pathfinding Gremlin who does ALL the pathfinding
+	PathfinderModule PathingGremlin;
+
+	//  Gerate array of Vectors which the Pathfinding Gremlin then populates with nodes based on samples
+	TArray<FVector> NavPoints = PathingGremlin.SampleNodesOverWholeNavMesh(GetWorld(), PathingGremlin.NodeSpacingSampleRate);
+
+	//  Make the Gremlin construct a fucking graph out of the samples
+	float NodeConnectionRadius = PathingGremlin.NodeSpacingSampleRate * PathingGremlin.ConnectionDensity;
+	TArray<FAbstractNodeForNavigation> Graph = PathingGremlin.BuildGraph(NavPoints, NodeConnectionRadius, GetWorld());
+
+	//  attach a number to just how wasteful Matt is with processing cycles 
+	BTV_LOG(LogTemp, Warning, TEXT("Graph built with %d nodes."), Graph.Num());
 }

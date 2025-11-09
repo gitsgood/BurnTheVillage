@@ -10,8 +10,6 @@
 * BTV_VERBOSE_LOG is there for excessive debugging that is not meant to be on unless a problem needs to be pinpointed.
 * It is meant to be turned off by default.
 */
-class EmptyClassHopingToBeDetectedByDoxygenForDocumentationPurposes;
-
 #define LOGGING 1			// Or 0 to disable
 #define EXCESSIVE_LOGGING 0
 
