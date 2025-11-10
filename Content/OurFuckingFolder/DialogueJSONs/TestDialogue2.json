@@ -1,0 +1,119 @@
+{
+	"NPCId": "Dumbass Smartass",
+	"Nodes": 
+	[
+		{
+			"NodeId": "Node1",
+			"NPCDialogue": "How DARE you?",
+			"OutgoingEdgeIds": ["Edge1"]
+		},
+		{
+			"NodeId": "Node5",
+			"NPCDialogue": "Ah, I see. In this case make sure to mention the king's succession when you try to convince the gendarme chief to raise the militia. This ought to help you towards \"Victory\"...",
+			"OutgoingEdgeIds": ["Edge6"]
+		},
+		{
+			"NodeId": "Node6",
+			"NPCDialogue": "Yes... yes! You might begin to see the truth then! We're not here to play games, perhaps there is a way to break the cycle, no?",
+			"OutgoingEdgeIds": ["Edge8"]
+		},
+		{
+			"NodeId": "Node4",
+			"NPCDialogue": "\"Victory\" assumes there is also \"defeat\". However, why would anything ever defeat you? Life has so much more to offer than these small games. A clever man can win a game, an enlightened one would never lose. Which one do you wish to be?",
+			"OutgoingEdgeIds": ["Edge5", "Edge7"]
+		},
+		{
+			"NodeId": "Node3",
+			"NPCDialogue": "Aah, but you see, what IS \"victory\". We must now figure this out shall we not?",
+			"OutgoingEdgeIds": ["Edge4"]
+		},
+		{
+			"NodeId": "Node8",
+			"NPCDialogue": "I could explain, but you would never have the curiosity to understand what it is I would explain. You may sod off, and suffer what you will.",
+			"OutgoingEdgeIds": ["Edge12"]
+		},
+		{
+			"NodeId": "Node7",
+			"NPCDialogue": "You insolent slave. This village shall be your very own cave, and your arrogance will chain you here forevermore. Do not talk to me again, you are incapable of learning.",
+			"OutgoingEdgeIds": ["Edge10", "Edge11"]
+		},
+		{
+			"NodeId": "Node2",
+			"NPCDialogue": "Oh yes, good. One should not waste time in recognising their superiors now should they?",
+			"OutgoingEdgeIds": ["Edge3", "Edge9"]
+		},
+		{
+			"NodeId": "START",
+			"NPCDialogue": "Hi, you are dumb, I am smart. You will henceforth obey me.",
+			"OutgoingEdgeIds": ["Edge0", "Edge2"]
+		}
+	],
+	"Edges":
+	[
+		{
+			"EdgeId": "Edge0",
+			"PlayerDialogue": "How about you go fuck yourself?",
+			"NextNodeId": "Node1"
+		},
+		{
+			"EdgeId": "Edge1",
+			"PlayerDialogue": "That's right, go fuck yourself.",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge2",
+			"PlayerDialogue": "Oh, and what shall I now do, my new master...",
+			"NextNodeId": "Node2"
+		},
+		{
+			"EdgeId": "Edge3",
+			"PlayerDialogue": "I am forever your inferior, oh great one, please, guide me towards victory.",
+			"NextNodeId": "Node3"
+		},
+		{
+			"EdgeId": "Edge4",
+			"PlayerDialogue": "What do you mean? Victory means winning.",
+			"NextNodeId": "Node4"
+		},
+		{
+			"EdgeId": "Edge5",
+			"PlayerDialogue": "A clever man, I have no pretentions towards being anything else.",
+			"NextNodeId": "Node5"
+		},
+		{
+			"EdgeId": "Edge6",
+			"PlayerDialogue": "Thank you, thank you...",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge7",
+			"PlayerDialogue": "I wish to be an enlightened man, I wish to rise above my material conditions.",
+			"NextNodeId": "Node6"
+		},
+		{
+			"EdgeId": "Edge8",
+			"PlayerDialogue": "I understand... thank you master, or should I say, teacher.",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge9",
+			"PlayerDialogue": "No, how about you shove it up yours, you fucking smartass.",
+			"NextNodeId": "Node7"
+		},
+		{
+			"EdgeId": "Edge10",
+			"PlayerDialogue": "Good, go fuck yourself too.",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge11",
+			"PlayerDialogue": "What cave are you talking about, you madman?",
+			"NextNodeId": "Node8"
+		},
+		{
+			"EdgeId": "Edge12",
+			"PlayerDialogue": "...",
+			"NextNodeId": ""
+		}
+	]
+}
