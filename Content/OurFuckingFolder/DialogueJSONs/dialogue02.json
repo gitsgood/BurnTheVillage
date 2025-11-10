@@ -1,0 +1,744 @@
+{
+	"NPCId": "Angry Gravedigger",
+	"Nodes": 
+	[
+		{
+			"NodeId": "Node5",
+			"NPCDialogue": "Fuck you, and fuck your faith.",
+			"OutgoingEdgeIds": ["Edge6"]
+		},
+		{
+			"NodeId": "Node6",
+			"NPCDialogue": "I hope there will be enough of you to bury...",
+			"OutgoingEdgeIds": ["Edge8"]
+		},
+		{
+			"NodeId": "Node4",
+			"NPCDialogue": "You're delusional, boy.",
+			"OutgoingEdgeIds": ["Edge5", "Edge7"]
+		},
+		{
+			"NodeId": "Node9",
+			"NPCDialogue": "Cheeky, I like it.",
+			"OutgoingEdgeIds": ["Edge12"]
+		},
+		{
+			"NodeId": "Node11",
+			"NPCDialogue": "I bet the horse would pay me good money to bury you all.",
+			"OutgoingEdgeIds": ["Edge15"]
+		},
+		{
+			"NodeId": "Node10",
+			"NPCDialogue": "*chad energy* Yes.",
+			"OutgoingEdgeIds": ["Edge14"]
+		},
+		{
+			"NodeId": "Node8",
+			"NPCDialogue": "Can't enjoy business if you're dead.",
+			"OutgoingEdgeIds": ["Edge11", "Edge13"]
+		},
+		{
+			"NodeId": "Node13",
+			"NPCDialogue": "Grave diggers don't have to make sense, fuck off.",
+			"OutgoingEdgeIds": ["Edge18"]
+		},
+		{
+			"NodeId": "Node15",
+			"NPCDialogue": "Horde's coin is as good as yours.",
+			"OutgoingEdgeIds": ["Edge21"]
+		},
+		{
+			"NodeId": "Node16",
+			"NPCDialogue": "Now you speak my language, boy.",
+			"OutgoingEdgeIds": ["Edge23"]
+		},
+		{
+			"NodeId": "Node14",
+			"NPCDialogue": "Living are of no concern to me. Dead are just clients.",
+			"OutgoingEdgeIds": ["Edge20", "Edge22"]
+		},
+		{
+			"NodeId": "Node12",
+			"NPCDialogue": "The day grave diggers pick up swords, is the day we all die unburied.",
+			"OutgoingEdgeIds": ["Edge17", "Edge19"]
+		},
+		{
+			"NodeId": "Node17",
+			"NPCDialogue": "What a load of shite.",
+			"OutgoingEdgeIds": ["Edge25"]
+		},
+		{
+			"NodeId": "Node7",
+			"NPCDialogue": "...speak.",
+			"OutgoingEdgeIds": ["Edge10", "Edge16", "Edge24"]
+		},
+		{
+			"NodeId": "Node3",
+			"NPCDialogue": "We will also need to bury a lot of you...",
+			"OutgoingEdgeIds": ["Edge3", "Edge4", "Edge9"]
+		},
+		{
+			"NodeId": "Node20",
+			"NPCDialogue": "Aye, it will, as long as it's double what I take for burials. Hazard pay you know. **spits**",
+			"OutgoingEdgeIds": ["Edge30"]
+		},
+		{
+			"NodeId": "Node19",
+			"NPCDialogue": "I said what I said, laddy, take it or leave it.",
+			"OutgoingEdgeIds": ["Edge29", "Edge31"]
+		},
+		{
+			"NodeId": "Node18",
+			"NPCDialogue": "I ain't paid to swing my shovel to kill folk, just to bury them.",
+			"OutgoingEdgeIds": ["Edge27", "Edge28"]
+		},
+		{
+			"NodeId": "Node2",
+			"NPCDialogue": "I'm an old man with a shovel. What the fuck can I do?",
+			"OutgoingEdgeIds": ["Edge2", "Edge26"]
+		},
+		{
+			"NodeId": "Node22",
+			"NPCDialogue": "Aye, shite. I guess I'll join you, to protect my business, you know...",
+			"OutgoingEdgeIds": ["Edge34"]
+		},
+		{
+			"NodeId": "Node23",
+			"NPCDialogue": "I trust my silver tongue more than your doom-saying. Begone.",
+			"OutgoingEdgeIds": ["Edge36"]
+		},
+		{
+			"NodeId": "Node21",
+			"NPCDialogue": "Exactly, like usual. Y'all will need to be buried...",
+			"OutgoingEdgeIds": ["Edge33", "Edge35"]
+		},
+		{
+			"NodeId": "Node25",
+			"NPCDialogue": "Over my dead body.",
+			"OutgoingEdgeIds": ["Edge39"]
+		},
+		{
+			"NodeId": "Node27",
+			"NPCDialogue": "You're pathetic.",
+			"OutgoingEdgeIds": ["Edge42"]
+		},
+		{
+			"NodeId": "Node26",
+			"NPCDialogue": "What a load of wank.",
+			"OutgoingEdgeIds": ["Edge41"]
+		},
+		{
+			"NodeId": "Node28",
+			"NPCDialogue": "You son of a bitch! FINE.",
+			"OutgoingEdgeIds": ["Edge44"]
+		},
+		{
+			"NodeId": "Node24",
+			"NPCDialogue": "**narrows eyes** what are you saying, BOY?",
+			"OutgoingEdgeIds": ["Edge38", "Edge40", "Edge43"]
+		},
+		{
+			"NodeId": "Node1",
+			"NPCDialogue": "You're welcome laddy, what do you want?",
+			"OutgoingEdgeIds": ["Edge1", "Edge32", "Edge37"]
+		},
+		{
+			"NodeId": "Node30",
+			"NPCDialogue": "The only place I'll be helping you to get to, is the grave.",
+			"OutgoingEdgeIds": ["Edge47"]
+		},
+		{
+			"NodeId": "Node33",
+			"NPCDialogue": "Fuck me... I guess I have to join you.",
+			"OutgoingEdgeIds": ["Edge51"]
+		},
+		{
+			"NodeId": "Node32",
+			"NPCDialogue": "They really do that??",
+			"OutgoingEdgeIds": ["Edge50"]
+		},
+		{
+			"NodeId": "Node35",
+			"NPCDialogue": "Heavens above! Fine, I'll join you, you psychopath!",
+			"OutgoingEdgeIds": ["Edge54"]
+		},
+		{
+			"NodeId": "Node36",
+			"NPCDialogue": "**gurgles on his own blood as the light fades from his eyes**",
+			"OutgoingEdgeIds": ["Edge56"]
+		},
+		{
+			"NodeId": "Node34",
+			"NPCDialogue": "Does it make you HARD to threaten an old man??",
+			"OutgoingEdgeIds": ["Edge53", "Edge55"]
+		},
+		{
+			"NodeId": "Node31",
+			"NPCDialogue": "What kind of animal kills a gravedigger?",
+			"OutgoingEdgeIds": ["Edge49", "Edge52"]
+		},
+		{
+			"NodeId": "Node29",
+			"NPCDialogue": "Aye, they do, but I doubt you'll have an open lid funeral...",
+			"OutgoingEdgeIds": ["Edge46", "Edge48"]
+		},
+		{
+			"NodeId": "Node40",
+			"NPCDialogue": "Good point, I suppose I'll help...",
+			"OutgoingEdgeIds": ["Edge61"]
+		},
+		{
+			"NodeId": "Node42",
+			"NPCDialogue": "...I suppose. Count me in then, but don't make me regret it, boy.",
+			"OutgoingEdgeIds": ["Edge64"]
+		},
+		{
+			"NodeId": "Node43",
+			"NPCDialogue": "Big words for little pisspot who supposedly needs my help. I hope horde pisses on your corpse.",
+			"OutgoingEdgeIds": ["Edge66"]
+		},
+		{
+			"NodeId": "Node41",
+			"NPCDialogue": "Colorful, you grim little fucker. But I ain't convinced.",
+			"OutgoingEdgeIds": ["Edge63", "Edge65"]
+		},
+		{
+			"NodeId": "Node39",
+			"NPCDialogue": "Are you sure you can afford me?",
+			"OutgoingEdgeIds": ["Edge60", "Edge62"]
+		},
+		{
+			"NodeId": "Node47",
+			"NPCDialogue": "**grins** Burn in hell, lad. Your corpse will be warm as the demons sodomize you.",
+			"OutgoingEdgeIds": ["Edge71"]
+		},
+		{
+			"NodeId": "Node48",
+			"NPCDialogue": "**scowls** FINE, you made your point. Let no imbred fuck in this shithole say I am not generous or courageous.",
+			"OutgoingEdgeIds": ["Edge73"]
+		},
+		{
+			"NodeId": "Node46",
+			"NPCDialogue": "Aye, you said that already. Stop repeating yourself like a brad with brain damage.",
+			"OutgoingEdgeIds": ["Edge70", "Edge72"]
+		},
+		{
+			"NodeId": "Node49",
+			"NPCDialogue": "...I like thanks. **grumbles** Fine. I shall assist you!",
+			"OutgoingEdgeIds": ["Edge75"]
+		},
+		{
+			"NodeId": "Node45",
+			"NPCDialogue": "So you say, but I fail to see how that concerns me!",
+			"OutgoingEdgeIds": ["Edge69", "Edge74"]
+		},
+		{
+			"NodeId": "Node50",
+			"NPCDialogue": "**falls on the ground, bleeding and missing half the teeth, cracked orbital making his temple bleed and eye flow out of his broken eyesocket**",
+			"OutgoingEdgeIds": ["Edge77"]
+		},
+		{
+			"NodeId": "Node51",
+			"NPCDialogue": "**laughs heartily** Such mouth on you lad. But FINE, I shall help you solely to prove you that Old Theodoric has a heart of gold under all that cemetery dirt.",
+			"OutgoingEdgeIds": ["Edge79"]
+		},
+		{
+			"NodeId": "Node44",
+			"NPCDialogue": "Let's not get hasty boy. I was just jerking your chain!",
+			"OutgoingEdgeIds": ["Edge68", "Edge76", "Edge78"]
+		},
+		{
+			"NodeId": "Node52",
+			"NPCDialogue": "**brick hits grave digger on the head. His head cracks and he falls on the ground dead**",
+			"OutgoingEdgeIds": ["Edge81"]
+		},
+		{
+			"NodeId": "Node38",
+			"NPCDialogue": "And that kind of language will cost you extra, too.",
+			"OutgoingEdgeIds": ["Edge59", "Edge67", "Edge80"]
+		},
+		{
+			"NodeId": "Node54",
+			"NPCDialogue": "Fag.",
+			"OutgoingEdgeIds": ["Edge84"]
+		},
+		{
+			"NodeId": "Node55",
+			"NPCDialogue": "Fag.",
+			"OutgoingEdgeIds": ["Edge86"]
+		},
+		{
+			"NodeId": "Node56",
+			"NPCDialogue": "Fag.",
+			"OutgoingEdgeIds": ["Edge88"]
+		},
+		{
+			"NodeId": "Node53",
+			"NPCDialogue": "**whistles** Are you hitting on me, boy?",
+			"OutgoingEdgeIds": ["Edge83", "Edge85", "Edge87"]
+		},
+		{
+			"NodeId": "Node37",
+			"NPCDialogue": "Are you getting philosophical on me? That's gonna cost you extra (50 gold).",
+			"OutgoingEdgeIds": ["Edge58", "Edge82"]
+		},
+		{
+			"NodeId": "START",
+			"NPCDialogue": "You look the correct size for a coffin.",
+			"OutgoingEdgeIds": ["Edge0", "Edge45", "Edge57", "Edge89"]
+		}
+	],
+	"Edges":
+	[
+		{
+			"EdgeId": "Edge0",
+			"PlayerDialogue": "Thanks? I guess...",
+			"NextNodeId": "Node1"
+		},
+		{
+			"EdgeId": "Edge1",
+			"PlayerDialogue": "The horde is coming, I will need your help...",
+			"NextNodeId": "Node2"
+		},
+		{
+			"EdgeId": "Edge2",
+			"PlayerDialogue": "Well... we will need trenches dug.",
+			"NextNodeId": "Node3"
+		},
+		{
+			"EdgeId": "Edge3",
+			"PlayerDialogue": "...I haven't thought of that.",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge4",
+			"PlayerDialogue": "Not if we win.",
+			"NextNodeId": "Node4"
+		},
+		{
+			"EdgeId": "Edge5",
+			"PlayerDialogue": "Have faith, old man.",
+			"NextNodeId": "Node5"
+		},
+		{
+			"EdgeId": "Edge6",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge7",
+			"PlayerDialogue": "Well then I guess I'll die delusional!",
+			"NextNodeId": "Node6"
+		},
+		{
+			"EdgeId": "Edge8",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge9",
+			"PlayerDialogue": "Then you have nothing to lose by helping us.",
+			"NextNodeId": "Node7"
+		},
+		{
+			"EdgeId": "Edge10",
+			"PlayerDialogue": "Think of how much business you'll have with all the corpses around...",
+			"NextNodeId": "Node8"
+		},
+		{
+			"EdgeId": "Edge11",
+			"PlayerDialogue": "Then you better work so we win.",
+			"NextNodeId": "Node9"
+		},
+		{
+			"EdgeId": "Edge12",
+			"PlayerDialogue": "Report to the town square.",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge13",
+			"PlayerDialogue": "Is money all you really care about?!",
+			"NextNodeId": "Node10"
+		},
+		{
+			"EdgeId": "Edge14",
+			"PlayerDialogue": "You soulless sonofabitch...",
+			"NextNodeId": "Node11"
+		},
+		{
+			"EdgeId": "Edge15",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge16",
+			"PlayerDialogue": "You're not an old man yet, and I bet you could a swing a sword as well as that shovel...",
+			"NextNodeId": "Node12"
+		},
+		{
+			"EdgeId": "Edge17",
+			"PlayerDialogue": "That doesn't even make sense...",
+			"NextNodeId": "Node13"
+		},
+		{
+			"EdgeId": "Edge18",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge19",
+			"PlayerDialogue": "No matter what we do, there's gonna be a lot of bodies to bury or not.",
+			"NextNodeId": "Node14"
+		},
+		{
+			"EdgeId": "Edge20",
+			"PlayerDialogue": "Then ensure you have business to run after this.",
+			"NextNodeId": "Node15"
+		},
+		{
+			"EdgeId": "Edge21",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge22",
+			"PlayerDialogue": "I bet horde raiders have lots of coin on them... How about we make as many of them into corpses?",
+			"NextNodeId": "Node16"
+		},
+		{
+			"EdgeId": "Edge23",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge24",
+			"PlayerDialogue": "Think of honor! Think of GLORY!",
+			"NextNodeId": "Node17"
+		},
+		{
+			"EdgeId": "Edge25",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge26",
+			"PlayerDialogue": "Shovel can still split skulls...",
+			"NextNodeId": "Node18"
+		},
+		{
+			"EdgeId": "Edge27",
+			"PlayerDialogue": "What?",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge28",
+			"PlayerDialogue": "I'm not sure if that makes sense... ?",
+			"NextNodeId": "Node19"
+		},
+		{
+			"EdgeId": "Edge29",
+			"PlayerDialogue": "Fine, I'll PAY you for every fucker you kill! Will that get you on board?",
+			"NextNodeId": "Node20"
+		},
+		{
+			"EdgeId": "Edge30",
+			"PlayerDialogue": "*end(you will pay him)*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge31",
+			"PlayerDialogue": "You're deranged, old man...",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge32",
+			"PlayerDialogue": "How do you imagine your business will continue, once the horde gets here?",
+			"NextNodeId": "Node21"
+		},
+		{
+			"EdgeId": "Edge33",
+			"PlayerDialogue": "Horde don't bury their dead, or any other dead. Sky funerals...",
+			"NextNodeId": "Node22"
+		},
+		{
+			"EdgeId": "Edge34",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge35",
+			"PlayerDialogue": "Unless the horde will kill you, and leave you to rot, like the REST of us.",
+			"NextNodeId": "Node23"
+		},
+		{
+			"EdgeId": "Edge36",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge37",
+			"PlayerDialogue": "Can I get a discount on a coffin? One sized roughly, like you...",
+			"NextNodeId": "Node24"
+		},
+		{
+			"EdgeId": "Edge38",
+			"PlayerDialogue": "I will kill you, if you will not help us.",
+			"NextNodeId": "Node25"
+		},
+		{
+			"EdgeId": "Edge39",
+			"PlayerDialogue": "**kill him**",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge40",
+			"PlayerDialogue": "That the horde will kill you, if you do not help us!",
+			"NextNodeId": "Node26"
+		},
+		{
+			"EdgeId": "Edge41",
+			"PlayerDialogue": "Please?",
+			"NextNodeId": "Node27"
+		},
+		{
+			"EdgeId": "Edge42",
+			"PlayerDialogue": "*go away, whimpering*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge43",
+			"PlayerDialogue": "I will save the horde the trouble of killing you, if you don't grab a sword.",
+			"NextNodeId": "Node28"
+		},
+		{
+			"EdgeId": "Edge44",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge45",
+			"PlayerDialogue": "Are the coffin lids included in the price?",
+			"NextNodeId": "Node29"
+		},
+		{
+			"EdgeId": "Edge46",
+			"PlayerDialogue": "I might... if you help me.",
+			"NextNodeId": "Node30"
+		},
+		{
+			"EdgeId": "Edge47",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge48",
+			"PlayerDialogue": "Same can be said of you, if you don't help.",
+			"NextNodeId": "Node31"
+		},
+		{
+			"EdgeId": "Edge49",
+			"PlayerDialogue": "The horde.",
+			"NextNodeId": "Node32"
+		},
+		{
+			"EdgeId": "Edge50",
+			"PlayerDialogue": "Aye, they do...",
+			"NextNodeId": "Node33"
+		},
+		{
+			"EdgeId": "Edge51",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge52",
+			"PlayerDialogue": "Me **put hand on pommel of your sword**",
+			"NextNodeId": "Node34"
+		},
+		{
+			"EdgeId": "Edge53",
+			"PlayerDialogue": "**unsheathe your sword** Say your prayers old man.",
+			"NextNodeId": "Node35"
+		},
+		{
+			"EdgeId": "Edge54",
+			"PlayerDialogue": "*happy end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge55",
+			"PlayerDialogue": "**draw your sword, and run him through the neck**",
+			"NextNodeId": "Node36"
+		},
+		{
+			"EdgeId": "Edge56",
+			"PlayerDialogue": "*good end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge57",
+			"PlayerDialogue": "Aren't ALL people correct size for a coffin?",
+			"NextNodeId": "Node37"
+		},
+		{
+			"EdgeId": "Edge58",
+			"PlayerDialogue": "Oooh, you greedy old fuck **clench your fists**",
+			"NextNodeId": "Node38"
+		},
+		{
+			"EdgeId": "Edge59",
+			"PlayerDialogue": "Fine, I'll pay you whatever you want, but you need to help us save this village.",
+			"NextNodeId": "Node39"
+		},
+		{
+			"EdgeId": "Edge60",
+			"PlayerDialogue": "It's my gold, or horde's steel. Pick your poison, old man.",
+			"NextNodeId": "Node40"
+		},
+		{
+			"EdgeId": "Edge61",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge62",
+			"PlayerDialogue": "No, but with me you'll have SOME gold, with horde, you'll be clutching your entrails so that they don't spill from your body!",
+			"NextNodeId": "Node41"
+		},
+		{
+			"EdgeId": "Edge63",
+			"PlayerDialogue": "By the time your guts are spilling under your body it will be to late to change your mind.",
+			"NextNodeId": "Node42"
+		},
+		{
+			"EdgeId": "Edge64",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge65",
+			"PlayerDialogue": "Then perish, you fucking dog!",
+			"NextNodeId": "Node43"
+		},
+		{
+			"EdgeId": "Edge66",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge67",
+			"PlayerDialogue": "**turns around ready to leave** You just lost yourself a customer.",
+			"NextNodeId": "Node44"
+		},
+		{
+			"EdgeId": "Edge68",
+			"PlayerDialogue": "**returns back to the grave digger** You sick old fuck, lives are at stake!",
+			"NextNodeId": "Node45"
+		},
+		{
+			"EdgeId": "Edge69",
+			"PlayerDialogue": "It will once horde raiders gut you like a fish, you stubborn fool.",
+			"NextNodeId": "Node46"
+		},
+		{
+			"EdgeId": "Edge70",
+			"PlayerDialogue": "You are reprehensible scum. Your death with be a mercy to this town.",
+			"NextNodeId": "Node47"
+		},
+		{
+			"EdgeId": "Edge71",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge72",
+			"PlayerDialogue": "**sighs** Stop bickering like old fishwoman then and grab a sword, your help will be compensated financially.",
+			"NextNodeId": "Node48"
+		},
+		{
+			"EdgeId": "Edge73",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge74",
+			"PlayerDialogue": "If it doesn't, then you shall die alone as well as thankless.",
+			"NextNodeId": "Node49"
+		},
+		{
+			"EdgeId": "Edge75",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge76",
+			"PlayerDialogue": "**slams fist into grave digger's face** You sick old fuck! I deserve to perish!",
+			"NextNodeId": "Node50"
+		},
+		{
+			"EdgeId": "Edge77",
+			"PlayerDialogue": "*end (-1 gravedigger)*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge78",
+			"PlayerDialogue": "**laughs mirthlessly** Oh thine sense of humor is flawless as it thine timing, you swine.",
+			"NextNodeId": "Node51"
+		},
+		{
+			"EdgeId": "Edge79",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge80",
+			"PlayerDialogue": "**throws a brick at grave digger**",
+			"NextNodeId": "Node52"
+		},
+		{
+			"EdgeId": "Edge81",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge82",
+			"PlayerDialogue": "No. I need you for the war effort. Stop being difficult, grab a sword and stop standing around with that shovel like a stiff cock.",
+			"NextNodeId": "Node53"
+		},
+		{
+			"EdgeId": "Edge83",
+			"PlayerDialogue": "Yes.",
+			"NextNodeId": "Node54"
+		},
+		{
+			"EdgeId": "Edge84",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge85",
+			"PlayerDialogue": "No.",
+			"NextNodeId": "Node55"
+		},
+		{
+			"EdgeId": "Edge86",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge87",
+			"PlayerDialogue": "Maybe?",
+			"NextNodeId": "Node56"
+		},
+		{
+			"EdgeId": "Edge88",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge89",
+			"PlayerDialogue": "**walks away**",
+			"NextNodeId": ""
+		}
+	]
+}

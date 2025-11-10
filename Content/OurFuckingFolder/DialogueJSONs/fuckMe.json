@@ -1,0 +1,89 @@
+{
+	"NPCId": "Smartass DUmbass Smartupatns",
+	"Nodes": 
+	[
+		{
+			"NodeId": "Node1",
+			"NPCDialogue": "Eat dick and die!",
+			"OutgoingEdgeIds": ["Edge1"]
+		},
+		{
+			"NodeId": "Node4",
+			"NPCDialogue": "Alright laddy, you have my help.",
+			"OutgoingEdgeIds": ["Edge5"]
+		},
+		{
+			"NodeId": "Node5",
+			"NPCDialogue": "Well, fuck you too then! Go fight them yourself!",
+			"OutgoingEdgeIds": ["Edge7"]
+		},
+		{
+			"NodeId": "Node3",
+			"NPCDialogue": "Do they smell as horrible as you do?",
+			"OutgoingEdgeIds": ["Edge4", "Edge6"]
+		},
+		{
+			"NodeId": "Node2",
+			"NPCDialogue": "Well... I aint apologising.",
+			"OutgoingEdgeIds": ["Edge3", "Edge8"]
+		},
+		{
+			"NodeId": "START",
+			"NPCDialogue": "You smell like shit!",
+			"OutgoingEdgeIds": ["Edge0", "Edge2", "Edge9"]
+		}
+	],
+	"Edges":
+	[
+		{
+			"EdgeId": "Edge0",
+			"PlayerDialogue": "Fuck you! So do you!",
+			"NextNodeId": "Node1"
+		},
+		{
+			"EdgeId": "Edge1",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge2",
+			"PlayerDialogue": "That's kinda rude...",
+			"NextNodeId": "Node2"
+		},
+		{
+			"EdgeId": "Edge3",
+			"PlayerDialogue": "The horde is coming, I need your help!",
+			"NextNodeId": "Node3"
+		},
+		{
+			"EdgeId": "Edge4",
+			"PlayerDialogue": "Yes, that's why we need to fight them.",
+			"NextNodeId": "Node4"
+		},
+		{
+			"EdgeId": "Edge5",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge6",
+			"PlayerDialogue": "No, they smell as horrible as YOU DO.",
+			"NextNodeId": "Node5"
+		},
+		{
+			"EdgeId": "Edge7",
+			"PlayerDialogue": "*end*",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge8",
+			"PlayerDialogue": "Well, then I don't want your help, you fuck.",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge9",
+			"PlayerDialogue": "**punch him**",
+			"NextNodeId": ""
+		}
+	]
+}
