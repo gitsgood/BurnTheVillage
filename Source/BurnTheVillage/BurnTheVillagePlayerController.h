@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
+#include "NavigationSystem.h"				//	Matt's A* requires this...
+#include "Engine/OverlapResult.h"			//	and this...
+#include "PathfinderModule.h"				//	and this one, which he wrote like a chad.
 #include "BurnTheVillagePlayerController.generated.h"
 
 class UNiagaraSystem;
@@ -89,6 +92,14 @@ protected:
 	*/
 	void OnInteractionPressed();
 
+	//	Members live here
+public:
+	// Instantiate new generation of Pathfinding Gremlin who does ALL the pathfinding
+	PathfinderModule PathingGremlin;
+	TArray<FVector> NavPoints;
+	TArray<FAbstractNodeForNavigation> Graph;
+
+	//	Methods live here
 public:
 	virtual void BeginPlay() override;
 };

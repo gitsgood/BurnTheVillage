@@ -113,18 +113,20 @@ TArray<FAbstractNodeForNavigation> PathfinderModule::BuildGraph(const TArray<FVe
 
 int32 PathfinderModule::FindClosestNode(const FVector& Pos, const TArray<FAbstractNodeForNavigation>& Graph)
 {
-    float BestDist = TNumericLimits<float>::Max();
-    int32 BestIndex = -1;
+	int32 ClosestNodeIndex = INDEX_NONE;
+	float MinDistanceSquared = TNumericLimits<float>::Max();
+
     for (int32 i = 0; i < Graph.Num(); ++i)
     {
-        float D = FVector::Dist(Pos, Graph[i].HereWeAre);
-        if (D < BestDist)
+        float DistanceSquared = FVector::DistSquared(Pos, Graph[i].HereWeAre);
+        if (DistanceSquared < MinDistanceSquared)
         {
-            BestDist = D;
-            BestIndex = i;
+            MinDistanceSquared = DistanceSquared;
+            ClosestNodeIndex = i;
         }
-    }
-    return BestIndex;
+	}
+
+	return ClosestNodeIndex;
 }
 
 TArray<int32> PathfinderModule::GremlinsHikingAdventure(const TArray<FAbstractNodeForNavigation>& Graph, int32 StartPosIndex, int32 GoalPosIndex)

@@ -11,6 +11,7 @@ struct FAbstractNodeForNavigation
 {
 	FVector HereWeAre;
 	TArray<int32> HereWeCanGo;
+	FAbstractNodeForNavigation() = default;
 	// I have implicit constructor because Matt hates constructors for no good reason
 };
 

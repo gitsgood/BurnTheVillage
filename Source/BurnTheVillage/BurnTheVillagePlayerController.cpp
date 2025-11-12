@@ -14,10 +14,6 @@
 #include "BurnTheVillageCharacter.h"		//	I include this so that when we GetLocalPlayer, we cast it into this to call the actual implementation of the interact function.
 #include "BTVLoggingControlMacro.h"			//	This header contains ONLY a conditional macro enabling or disabling logging for convenience and eventually performance.
 
-#include "NavigationSystem.h"				//	Matt's A* requires this...
-#include "Engine/OverlapResult.h"			//	and this...
-#include "PathfinderModule.h"				//	and this one, which he wrote like a chad.
-
 ABurnTheVillagePlayerController::ABurnTheVillagePlayerController()
 {
 	bIsTouch = false;
@@ -106,17 +102,40 @@ void ABurnTheVillagePlayerController::OnSetDestinationTriggered()
 	}
 }
 
+//	Original Epic's Implementation commented out below
+
+//void ABurnTheVillagePlayerController::OnSetDestinationReleased()
+//{
+//	// If it was a short press
+//	if (FollowTime <= ShortPressThreshold)
+//	{
+//		// We move there and spawn some particles
+//		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
+//		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
+//	}
+//
+//	FollowTime = 0.f;
+//}
+
+//	My psychotic replacement implementation, may gods above and below have mercy on my wretched soul
+
 void ABurnTheVillagePlayerController::OnSetDestinationReleased()
 {
-	// If it was a short press
-	if (FollowTime <= ShortPressThreshold)
-	{
-		// We move there and spawn some particles
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
-	}
+	FHitResult Hit;
+	bool bHit = bIsTouch
+		? GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit)
+		: GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
 
-	FollowTime = 0.f;
+	if (!bHit) return;
+
+	// Click location
+	FVector ClickLocation = Hit.Location;
+
+	// Find nearest graph node
+	int32 ClickNodeIndex = PathingGremlin.FindClosestNode(ClickLocation, Graph);
+	if (ClickNodeIndex == INDEX_NONE) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("Mouse click closest to node index: %d"), ClickNodeIndex);
 }
 
 // Triggered every frame when the input is held down
@@ -179,15 +198,12 @@ void ABurnTheVillagePlayerController::BeginPlay()
 	//  Get size of the NavMesh
 	FBox NagivationVolume = NavMesh->GetNavMeshBounds();
 
-	// Instantiate new generation of Pathfinding Gremlin who does ALL the pathfinding
-	PathfinderModule PathingGremlin;
-
 	//  Gerate array of Vectors which the Pathfinding Gremlin then populates with nodes based on samples
-	TArray<FVector> NavPoints = PathingGremlin.SampleNodesOverWholeNavMesh(GetWorld(), PathingGremlin.NodeSpacingSampleRate);
+	NavPoints = PathingGremlin.SampleNodesOverWholeNavMesh(GetWorld(), PathingGremlin.NodeSpacingSampleRate);
 
 	//  Make the Gremlin construct a fucking graph out of the samples
 	float NodeConnectionRadius = PathingGremlin.NodeSpacingSampleRate * PathingGremlin.ConnectionDensity;
-	TArray<FAbstractNodeForNavigation> Graph = PathingGremlin.BuildGraph(NavPoints, NodeConnectionRadius, GetWorld());
+	Graph = PathingGremlin.BuildGraph(NavPoints, NodeConnectionRadius, GetWorld());
 
 	//  attach a number to just how wasteful Matt is with processing cycles 
 	BTV_LOG(LogTemp, Warning, TEXT("Graph built with %d nodes."), Graph.Num());
