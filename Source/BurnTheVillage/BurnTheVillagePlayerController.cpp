@@ -16,9 +16,6 @@
 
 ABurnTheVillagePlayerController::ABurnTheVillagePlayerController()
 {
-	bIsTouch = false;
-	bMoveToMouseCursor = false;
-
 	// configure the controller
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -72,6 +69,8 @@ void ABurnTheVillagePlayerController::OnInputStarted()
 
 void ABurnTheVillagePlayerController::OnSetDestinationTriggered()
 {
+	if (bUseCustomPathfinding) return;
+
 	// We flag that the input is being pressed
 	FollowTime += GetWorld()->GetDeltaSeconds();
 	
@@ -122,20 +121,48 @@ void ABurnTheVillagePlayerController::OnSetDestinationTriggered()
 void ABurnTheVillagePlayerController::OnSetDestinationReleased()
 {
 	FHitResult Hit;
-	bool bHit = bIsTouch
-		? GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit)
-		: GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
+	TArray<int32> TrailIndexes;
+	if (bIsTouch)
+	{
+		GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit);
+	}
+	else
+	{
+		GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
+	}
 
-	if (!bHit) return;
+	if (!Hit.bBlockingHit) return;
 
 	// Click location
 	FVector ClickLocation = Hit.Location;
 
-	// Find nearest graph node
+	// Find nearest correct nodes
+	int32 PlayerPosIndex = PathingGremlin.FindClosestNode(GetPawn()->GetActorLocation(), Graph);
 	int32 ClickNodeIndex = PathingGremlin.FindClosestNode(ClickLocation, Graph);
+	UE_LOG(LogTemp, Warning, TEXT("Mouse click closest to node index: %d"), ClickNodeIndex);
 	if (ClickNodeIndex == INDEX_NONE) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("Mouse click closest to node index: %d"), ClickNodeIndex);
+	// Find path using A*
+	if (PlayerPosIndex != INDEX_NONE || ClickNodeIndex != INDEX_NONE)
+	{
+		TrailIndexes = PathingGremlin.GremlinsHikingAdventure(Graph, PlayerPosIndex, ClickNodeIndex);
+	}
+	if (TrailIndexes.Num() == 0) return;
+
+	//	Convert node indexes to world locations
+	TArray<FVector> TrailPath;
+	for (int32 Index : TrailIndexes)
+	{
+		TrailPath.Add(Graph[Index].HereWeAre);
+	}
+
+	//	Somehow call function that turns all those vectors into actual movement commands
+	MoveCharacterAlongPath(TrailPath);
+}
+
+void ABurnTheVillagePlayerController::MoveCharacterAlongPath(TArray<FVector> ArrayOfLocations)
+{
+	
 }
 
 // Triggered every frame when the input is held down
@@ -208,3 +235,5 @@ void ABurnTheVillagePlayerController::BeginPlay()
 	//  attach a number to just how wasteful Matt is with processing cycles 
 	BTV_LOG(LogTemp, Warning, TEXT("Graph built with %d nodes."), Graph.Num());
 }
+
+

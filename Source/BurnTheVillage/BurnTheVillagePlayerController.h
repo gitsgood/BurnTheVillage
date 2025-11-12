@@ -98,10 +98,12 @@ public:
 	PathfinderModule PathingGremlin;
 	TArray<FVector> NavPoints;
 	TArray<FAbstractNodeForNavigation> Graph;
+	bool bUseCustomPathfinding = true;
 
 	//	Methods live here
 public:
 	virtual void BeginPlay() override;
+	void MoveCharacterAlongPath(TArray<FVector> ArrayOfLocations);
 };
 
 
