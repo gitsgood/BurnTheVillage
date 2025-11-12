@@ -78,7 +78,19 @@ TArray<FBurnTheVillageDialogueEdge> UBurnTheVillageDialogueManager::GetCurrentPl
 		if (const FBurnTheVillageDialogueEdge* FoundEdge = DialogueData->EdgeMap.Find(EdgeId)) { Options.Add(*FoundEdge); }
 		else { BTV_LOG(LogTemp, Warning, TEXT("%s says: Node '%s' references non-existent EdgeId '%s'"), TEXT(__FUNCTION__), *CurrentNode.NodeId, *EdgeId); }
 	}
-	return Options;	//	The non default return.
+	if (!Options.IsEmpty())
+	{
+		return Options;	//	The non default return.
+	}
+	else
+	{
+		BTV_VERBOSE_LOG(LogTemp, Warning, TEXT("%s says: Empty edge array detected, returning a default option..."), TEXT(__FUNCTION__));
+		FBurnTheVillageDialogueEdge& DefaultOption = Options.Emplace_GetRef();
+		DefaultOption.EdgeId = "END";
+		DefaultOption.PlayerDialogue = "Goodbye";
+		DefaultOption.NextNodeId = "";
+		return Options;
+	}
 }
 
 bool UBurnTheVillageDialogueManager::AdvanceDialogue(const FString& EdgeId)
@@ -87,7 +99,12 @@ bool UBurnTheVillageDialogueManager::AdvanceDialogue(const FString& EdgeId)
 	if (!DialogueData) { BTV_LOG(LogTemp, Warning, TEXT("%s says: Failed to retrieve NPC dialogue"), TEXT(__FUNCTION__)); return false; }
 
 	const FBurnTheVillageDialogueEdge* ChosenEdge = DialogueData->EdgeMap.Find(EdgeId);
-	if (!ChosenEdge) { BTV_LOG(LogTemp, Warning, TEXT("%s says: Failed to retrieve ChosenEdge with EdgeId: %s"), TEXT(__FUNCTION__), *EdgeId); return false; }
+	if (!ChosenEdge) 
+	{ 
+		BTV_LOG(LogTemp, Warning, TEXT("%s says: Failed to retrieve ChosenEdge with EdgeId: %s"), TEXT(__FUNCTION__), *EdgeId); 
+		EndDialogue();
+		return false; 
+	}
 
 	if (!DialogueData->NodeMap.Contains(ChosenEdge->NextNodeId)) 
 	{ 

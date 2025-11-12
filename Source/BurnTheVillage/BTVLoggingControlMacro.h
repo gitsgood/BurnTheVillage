@@ -11,7 +11,7 @@
 * It is meant to be turned off by default.
 */
 #define LOGGING 1			// Or 0 to disable
-#define EXCESSIVE_LOGGING 0
+#define EXCESSIVE_LOGGING 1
 
 #if !UE_BUILD_SHIPPING && LOGGING == 1
 #define BTV_LOG(Category, Verbosity, Format, ...) \

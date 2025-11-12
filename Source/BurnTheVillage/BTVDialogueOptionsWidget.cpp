@@ -11,6 +11,7 @@
 
 void UBTVDialogueOptionsWidget::OnDialogueOptionClicked()
 {
+	BTV_VERBOSE_LOG(LogTemp, Warning, TEXT("%s says: Event is triggered"), TEXT(__FUNCTION__));
 	if (!TheHandThatFedUs.IsValid()) { BTV_LOG(LogTemp, Warning, TEXT("%s says: I do not know who my mother is, I can't fucking call her!"), TEXT(__FUNCTION__)); return; }
 	TheHandThatFedUs->AdvanceDisplayedDialogue(OurEdge.EdgeId);
 }
@@ -19,7 +20,14 @@ void UBTVDialogueOptionsWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	DialogueOption->OnClicked.AddDynamic(this, &UBTVDialogueOptionsWidget::OnDialogueOptionClicked);
+	if (DialogueOption)
+	{
+		DialogueOption->OnClicked.AddDynamic(this, &UBTVDialogueOptionsWidget::OnDialogueOptionClicked);
+	}
+	else
+	{
+		BTV_LOG(LogTemp, Error, TEXT("%s says: DialogueOption button is null! Check BindWidget and UMG naming."), TEXT(__FUNCTION__));
+	}
 }
 
 void UBTVDialogueOptionsWidget::SetPlayerDialogueText(const FString& InPlayerDialogueContent)

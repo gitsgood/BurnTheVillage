@@ -1,0 +1,54 @@
+{
+	"NPCId": "Random Dude",
+	"Nodes": 
+	[
+		{
+			"NodeId": "Node2",
+			"NPCDialogue": "Here's my problem... I'm being followed. Watched. I'm a threat.",
+			"OutgoingEdgeIds": ["Edge2", "Edge3"]
+		},
+		{
+			"NodeId": "Node1",
+			"NPCDialogue": "Good! I think I can trust you. Nobody else in town.",
+			"OutgoingEdgeIds": ["Edge1"]
+		},
+		{
+			"NodeId": "Node3",
+			"NPCDialogue": "Just as I thought! Just as I thought!",
+			"OutgoingEdgeIds": []
+		},
+		{
+			"NodeId": "START",
+			"NPCDialogue": "You came! You're sure you weren't followed?",
+			"OutgoingEdgeIds": ["Edge0", "Edge4"]
+		}
+	],
+	"Edges":
+	[
+		{
+			"EdgeId": "Edge0",
+			"PlayerDialogue": "I wasn't followed, perhaps, maybe.",
+			"NextNodeId": "Node1"
+		},
+		{
+			"EdgeId": "Edge1",
+			"PlayerDialogue": "...",
+			"NextNodeId": "Node2"
+		},
+		{
+			"EdgeId": "Edge2",
+			"PlayerDialogue": "That's rough, buddy.",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge3",
+			"PlayerDialogue": "Oof.",
+			"NextNodeId": ""
+		},
+		{
+			"EdgeId": "Edge4",
+			"PlayerDialogue": "Wouldn't you like to know?",
+			"NextNodeId": "Node3"
+		}
+	]
+}
