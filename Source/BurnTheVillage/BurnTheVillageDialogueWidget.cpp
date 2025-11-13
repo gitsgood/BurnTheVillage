@@ -10,6 +10,7 @@
 #include "Components/TextBlock.h"				//	I would like to bind logic into the widget's text blocks from here.
 #include "Components/VerticalBox.h"				//	Same as above.
 #include "BTVLoggingControlMacro.h"				//	This header contains ONLY a conditional macro enabling or disabling logging for convenience and eventually performance.
+#include "Components/Image.h"
 
 #pragma region Dialogue Functionality
 
@@ -53,11 +54,22 @@ void UBurnTheVillageDialogueWidget::DisplayDialogueContent()
 		ABurnTheVillageNPC* CurrentNPC = Cast<ABurnTheVillageNPC>(PlayerInstance->GetCurrentInteractableActor());
 		if (!CurrentNPC) return;
 		CurrentNPC->ClearOngoingDialogueWidgetPointer();
+		
 		return; 
 	}
 	BTV_LOG(LogTemp, Log, TEXT("%s says: CurrentNPCDialogueNode set to %s"), TEXT(__FUNCTION__), *CurrentNPCDialogueNode.NodeId);
 	if (!NPCText) { BTV_LOG(LogTemp, Warning, TEXT("%s says: Failed to retrieve NPCText, aborting..."), TEXT(__FUNCTION__)); return; }
 	NPCText->SetText(FText::FromString(DialogueManager->GetNPCDialogueContent(CurrentNPCDialogueNode)));
+
+
+	//Sets the NPC avatar by checking the NPC instance aka the source of the avatar. Hopefully doesn't break anything
+	ABurnTheVillageNPC* CurrentNPC = Cast<ABurnTheVillageNPC>(PlayerInstance->GetCurrentInteractableActor());
+	if (CurrentNPC)
+	{
+		NPCAvatar->SetBrushFromTexture(CurrentNPC->GetNPCAvatar());
+	}
+
+
 
 	if(!PlayerDialogueOptionContainer){
 		BTV_LOG(LogTemp, Warning, TEXT("%s says: PlayerDialogueOptionContainer is null, aborting..."), TEXT(__FUNCTION__));
