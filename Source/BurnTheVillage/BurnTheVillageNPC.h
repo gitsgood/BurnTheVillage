@@ -68,6 +68,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPC|Dialogue")
 	TSubclassOf<UBurnTheVillageDialogueWidget> DialogueWidgetClass;
 
+	//Lets us add a texture. To the NPC. So we would get a fun little image in the dialogue like we're cool or something
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPC|Dialogue")
+	UTexture2D* NPCAvatar;
+
+	//Flags. Crucial for gameplay
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly ,Category = "NPC|Dialogue")
+	bool bFinishedDialogue = false;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly ,Category = "NPC|Dialogue")
+	bool bJoinedTheEffort = false;
+	
 public:
 
 	/**
@@ -86,6 +97,25 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "NPC|Dialogue")
 	void ClearOngoingDialogueWidgetPointer() { OngoingDialogueWidgetInstance = nullptr; }
 
+	UFUNCTION(BlueprintPure, Category = "NPC|Dialogue")
+	UTexture2D* GetNPCAvatar();
+
+	UFUNCTION(BlueprintPure, Category = "NPC|Dialogue")
+	bool GetbFinishedDialogue();
+
+	UFUNCTION(BlueprintPure, Category = "NPC|Dialogue")
+	bool GetbJoinedTheEffort();
+
+	UFUNCTION(BlueprintCallable, Category = "NPC|Dialogue")
+	void SetbFinishedDialogue(bool bFinished);
+
+	UFUNCTION(BlueprintCallable, Category = "NPC|Dialogue")
+	void SetbJoinedTheEffort(bool bJoined);
+
+	
+
+	
+	
 #pragma endregion
 
 #pragma region Interaction

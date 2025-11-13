@@ -26,6 +26,9 @@ struct BURNTHEVILLAGE_API FBurnTheVillageDialogueEdge
 
 	UPROPERTY()
 	FString NextNodeId;
+
+	UPROPERTY()
+	bool bFinishedDialogue = false;
 };
 
 /**
@@ -48,6 +51,9 @@ struct BURNTHEVILLAGE_API FBurnTheVillageDialogueNode
 
 	UPROPERTY()
 	TArray<FString> OutgoingEdgeIds;
+
+	UPROPERTY()
+	bool bJoinedTheEffort = false;
 };
 
 /**

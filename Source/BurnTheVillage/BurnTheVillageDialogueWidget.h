@@ -6,12 +6,14 @@
 #include "Blueprint/UserWidget.h"
 #include "BurnTheVillageDialogueWidget.generated.h"
 
+
 class ABurnTheVillageCharacter;
 class UBTVDialogueOptionsWidget;
 class ABurnTheVillageCharacter;
 class ABurnTheVillageNPC;
 class UBurnTheVillageDialogueManager;
 
+class UImage;
 class UTextBlock;
 class UVerticalBox;
 
@@ -55,6 +57,9 @@ protected:
 	*/
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UVerticalBox> PlayerDialogueOptionContainer;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<UImage> NPCAvatar;
 
 #pragma endregion
 

@@ -48,6 +48,30 @@ FString ABurnTheVillageNPC::GetNPCId() const
 	return NPCId;
 }
 
+UTexture2D* ABurnTheVillageNPC::GetNPCAvatar()
+{
+	return NPCAvatar;
+}
+
+bool ABurnTheVillageNPC::GetbFinishedDialogue()
+{
+	return bFinishedDialogue;
+}
+
+bool ABurnTheVillageNPC::GetbJoinedTheEffort()
+{
+	return bJoinedTheEffort;
+}
+
+void ABurnTheVillageNPC::SetbFinishedDialogue(bool bFinished)
+{
+}
+
+void ABurnTheVillageNPC::SetbJoinedTheEffort(bool bJoined)
+{
+}
+
+
 #pragma endregion
 
 #pragma region Interaction

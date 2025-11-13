@@ -5,7 +5,8 @@
 		{
 			"NodeId": "Node2",
 			"NPCDialogue": "Here's my problem... I'm being followed. Watched. I'm a threat.",
-			"OutgoingEdgeIds": ["Edge2", "Edge3"]
+			"OutgoingEdgeIds": ["Edge2", "Edge3"],
+			"bJoinedTheEffort": true
 		},
 		{
 			"NodeId": "Node1",
@@ -15,7 +16,8 @@
 		{
 			"NodeId": "Node3",
 			"NPCDialogue": "Just as I thought! Just as I thought!",
-			"OutgoingEdgeIds": []
+			"OutgoingEdgeIds": [],
+			"bJoinedTheEffort": false
 		},
 		{
 			"NodeId": "START",
@@ -38,17 +40,20 @@
 		{
 			"EdgeId": "Edge2",
 			"PlayerDialogue": "That's rough, buddy.",
-			"NextNodeId": ""
+			"NextNodeId": "",
+			"bFinishedDialogue": true
 		},
 		{
 			"EdgeId": "Edge3",
 			"PlayerDialogue": "Oof.",
-			"NextNodeId": ""
+			"NextNodeId": "",
+			"bFinishedDialogue": true
 		},
 		{
 			"EdgeId": "Edge4",
 			"PlayerDialogue": "Wouldn't you like to know?",
-			"NextNodeId": "Node3"
+			"NextNodeId": "Node3",
+			"bFinishedDialogue": true
 		}
 	]
 }
