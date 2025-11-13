@@ -157,12 +157,35 @@ void ABurnTheVillagePlayerController::OnSetDestinationReleased()
 	}
 
 	//	Somehow call function that turns all those vectors into actual movement commands
-	MoveCharacterAlongPath(TrailPath);
+	SetPath(TrailPath);
 }
 
-void ABurnTheVillagePlayerController::MoveCharacterAlongPath(TArray<FVector> ArrayOfLocations)
+void ABurnTheVillagePlayerController::SetPath(const TArray<FVector>& ArrayOfLocations)
 {
-	
+	PathPoints = ArrayOfLocations;
+	CurrentPathIndex = 0;
+}
+
+void ABurnTheVillagePlayerController::MoveCharacterAlongPath(float deltaTime)
+{
+	APawn* ControlledPawn = GetPawn();
+	if (PathPoints.Num() == 0 || CurrentPathIndex >= PathPoints.Num())
+		return;
+
+	FVector CurrentLocation = ControlledPawn->GetActorLocation();
+	FVector Target = PathPoints[CurrentPathIndex];
+
+	float Distance = FVector::Dist2D(CurrentLocation, Target);
+	if (Distance < AcceptanceRadius)
+	{
+		CurrentPathIndex++;
+		return;
+	}
+	FVector Direction = (Target - CurrentLocation);
+	Direction.Z = 0; // optional, ignore vertical if desired
+	Direction.Normalize();
+
+	ControlledPawn->AddMovementInput(Direction, 1.0f);
 }
 
 // Triggered every frame when the input is held down
@@ -234,6 +257,12 @@ void ABurnTheVillagePlayerController::BeginPlay()
 
 	//  attach a number to just how wasteful Matt is with processing cycles 
 	BTV_LOG(LogTemp, Warning, TEXT("Graph built with %d nodes."), Graph.Num());
+}
+
+void ABurnTheVillagePlayerController::Tick(float deltaTime)
+{
+	Super::Tick(deltaTime);
+	MoveCharacterAlongPath(deltaTime);
 }
 
 

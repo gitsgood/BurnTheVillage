@@ -100,10 +100,20 @@ public:
 	TArray<FAbstractNodeForNavigation> Graph;
 	bool bUseCustomPathfinding = true;
 
+private:
+	TArray<FVector> PathPoints;
+	int32 CurrentPathIndex = 0;
+
+	UPROPERTY(EditAnywhere, Category = "Path Following")
+	float AcceptanceRadius = 50.f;
+
 	//	Methods live here
 public:
 	virtual void BeginPlay() override;
-	void MoveCharacterAlongPath(TArray<FVector> ArrayOfLocations);
+	virtual void Tick(float deltaTime) override;
+
+	void SetPath(const TArray<FVector>& ArrayOfLocations);
+	void MoveCharacterAlongPath(float deltaTime);
 };
 
 
