@@ -8,6 +8,7 @@
 #include "BurnTheVillageInteractPrompt.h"	//	Every NPC has their own little pretty interact prompt that shows up.
 #include "BTVLoggingControlMacro.h"			//	This header contains ONLY a conditional macro enabling or disabling logging for convenience and eventually performance.
 
+
 // Sets default values
 ABurnTheVillageNPC::ABurnTheVillageNPC()
 {
@@ -37,7 +38,9 @@ void ABurnTheVillageNPC::BeginPlay()
 		ensure(InteractPromptWidgetComponent);
 		InteractPromptWidgetComponent->SetupAttachment(RootComponent);
 		BTV_LOG(LogTemp, Warning, TEXT("%s says: Constructor failed to instantiate Widget, I did it instead."), TEXT(__FUNCTION__));
+		
 	}
+	
 
 }
 
@@ -65,10 +68,13 @@ bool ABurnTheVillageNPC::GetbJoinedTheEffort()
 
 void ABurnTheVillageNPC::SetbFinishedDialogue(bool bFinished)
 {
+	bFinishedDialogue = bFinished;
 }
 
 void ABurnTheVillageNPC::SetbJoinedTheEffort(bool bJoined)
 {
+	bJoinedTheEffort = bJoined;
+	OnNPCRecruited.Broadcast(bJoined);
 }
 
 
@@ -78,7 +84,7 @@ void ABurnTheVillageNPC::SetbJoinedTheEffort(bool bJoined)
 
 void ABurnTheVillageNPC::ShowInteract(AActor* Interactor, bool bIsInRange)
 {
-	if (InteractPromptWidgetComponent)
+	if ((InteractPromptWidgetComponent) && (bFinishedDialogue == false))
 	{
 		BTV_LOG(LogTemp, Log, TEXT("%s says: Showing NPC's Interact Prompt widget..."), TEXT(__FUNCTION__));
 		InteractPromptWidgetComponent->SetVisibility(bIsInRange);
@@ -87,6 +93,7 @@ void ABurnTheVillageNPC::ShowInteract(AActor* Interactor, bool bIsInRange)
 
 void ABurnTheVillageNPC::InitiateInteraction(AActor* Interactor)
 {
+	if (bFinishedDialogue) return;
 	if (!InteractPromptWidgetComponent) return;
 	if (!(InteractPromptWidgetComponent->IsVisible())) return;
 	if (!DialogueWidgetClass) return;
@@ -95,7 +102,9 @@ void ABurnTheVillageNPC::InitiateInteraction(AActor* Interactor)
 	OngoingDialogueWidgetInstance = CreateWidget<UBurnTheVillageDialogueWidget>(GetWorld(), DialogueWidgetClass);
 	//	The parameter in CreateWidget is asking who has "ownership" over this widget instance. We give it to the world, because "ownership" here simply refers to when the destructor gets called. It will therefore get called when the level is destroyed.
 	
-	OngoingDialogueWidgetInstance->AddToViewport();	
+	OngoingDialogueWidgetInstance->AddToViewport();
+
+	InteractPromptWidgetComponent->SetVisibility(false);
 }
 
 void ABurnTheVillageNPC::HideInteract(AActor* Interactor)

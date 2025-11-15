@@ -10,12 +10,14 @@
         {
             "NodeId": "GOODBYE",
             "NPCDialogue": "Goodbye you ingrate, uncultured SWINE!",
-            "OutgoingEdgeIds": ["ByeBye"]
+            "OutgoingEdgeIds": ["ByeBye"],
+			"bJoinedTheEffort": false
         },
         {
             "NodeId": "INITIATION",
             "NPCDialogue": "Yes... come with me...",
-            "OutgoingEdgeIds": ["ByeBye"]
+            "OutgoingEdgeIds": ["ByeBye"],
+			"bJoinedTheEffort": true
         }
     ],
     "Edges":

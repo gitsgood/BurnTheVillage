@@ -6,6 +6,10 @@
 #include "JsonObjectConverter.h"
 #include "BurnTheVillageDialogue.h"
 #include "BTVLoggingControlMacro.h"				//	This header contains ONLY a conditional macro enabling or disabling logging for convenience and eventually performance.
+#include "Kismet\GameplayStatics.h"				//	I need a reference to the player character. This has something that can provide that.
+#include "BurnTheVillageCharacter.h"
+#include "BurnTheVillageNPC.h"
+
 
 bool UBurnTheVillageDialogueManager::LoadDialogueFromFile(const FString& FilePath)
 {
@@ -93,6 +97,7 @@ bool UBurnTheVillageDialogueManager::AdvanceDialogue(const FString& EdgeId)
 	{ 
 		BTV_LOG(LogTemp, Log, TEXT("%s says: No Node found to come after ChosenEdge, ending dialogue"), TEXT(__FUNCTION__));
 		EndDialogue();
+		
 		return false;	//	Dialogue not advanced, therefore returns false.
 	}
 
@@ -102,8 +107,36 @@ bool UBurnTheVillageDialogueManager::AdvanceDialogue(const FString& EdgeId)
 
 void UBurnTheVillageDialogueManager::EndDialogue()
 {
+	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(this, 0);
+
+	ABurnTheVillageCharacter* PlayerCharacter = Cast<ABurnTheVillageCharacter>(Character);
+
+	if (!PlayerCharacter)
+	{
+		BTV_LOG(LogTemp, Warning, TEXT("%s says: PlayerCharacter reference invalid or cast failed."), TEXT(__FUNCTION__));
+		return;
+	}
+
+	AActor* ConversedWithActor = PlayerCharacter->GetCurrentInteractableActor();
+	ABurnTheVillageNPC* ConversedWithNPC = Cast<ABurnTheVillageNPC>(ConversedWithActor);
+	if (!ConversedWithNPC)
+	{
+		BTV_LOG(LogTemp, Warning, TEXT("%s says: NPC character reference invalid or cast failed."), TEXT(__FUNCTION__));
+		return;
+	}
+
+	ConversedWithNPC->SetbFinishedDialogue(true);
+	FBurnTheVillageDialogueNode DialogueNode;
+	GetCurrentNode(DialogueNode);
+	if (DialogueNode.bJoinedTheEffort==true)
+	{
+		ConversedWithNPC->SetbJoinedTheEffort(true);
+	}
+	ConversedWithNPC->HideInteract(ConversedWithActor);
+	
 	CurrentNPCId.Empty();
 	CurrentNodeId.Empty();
+
 }
 
 FString UBurnTheVillageDialogueManager::GetNPCDialogueContent(const FBurnTheVillageDialogueNode& Node) const

@@ -7,6 +7,8 @@
 #include "BurnTheVillageInteractInterface.h"	//	Interaction Interface implemented in C++ BECAUSE WE'RE FUCKING CHADS, WE'RE IN IT FOR THE LOVE OF THE GAME, WE BREEATH C++, WE LIVE THIS SHIT
 #include "BurnTheVillageNPC.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNPCRecruited, bool, NewValue);
+
 class UWidgetComponent;
 class UBurnTheVillageDialogueWidget;
 
@@ -35,6 +37,8 @@ public:
 	// Called to bind functionality to input
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+	
 #pragma endregion
 
 	//	THIS CODE BELONGS TO US -------------------------------------------------------------------------------------------------------
@@ -81,6 +85,11 @@ protected:
 	
 public:
 
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FNPCRecruited OnNPCRecruited;
+	
+	
+	
 	/**
 	* @brief Grants access to this NPC's NPCId string.
 	* 

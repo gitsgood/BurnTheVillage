@@ -65,6 +65,7 @@ protected:
 	TObjectPtr<UBurnTheVillageDialogueManager>  DialogueManager;
 
 public:
+	
 
 	/**
 	* @brief Grants access to encapsulated Dialogue Manager instance instantiated inside the player.
