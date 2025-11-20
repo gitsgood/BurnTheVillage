@@ -72,7 +72,7 @@ public:
 	* -Any class that intends to affect dialogue in any way would need to declare a pointer of type UBurnTheVillageDialogueManager
 	* and assign it using this getter.
 	* 
-	* @return Returns the adress of the Dialogue Manager class, allowing other classes to call it's functions.\n.Get() casts into a TObjectPtr explicitly, leaving nothing to chance.
+	* @return Returns the adress of the Dialogue Manager class, allowing other classes to call it's functions. .Get() casts into a TObjectPtr explicitly, leaving nothing to chance.
 	*/
 	UFUNCTION(BlueprintPure, Category = "Player|Dialogue")
 	UBurnTheVillageDialogueManager* GetDialogueManager() const;
