@@ -46,6 +46,7 @@ protected:
 	*/
 	UPROPERTY()
 	TMap<FString, FDialogueData> AllDialogues;
+	
 
 #pragma region Conversation State Variables
 
@@ -62,6 +63,25 @@ protected:
 	*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dialogue|State")
 	FString CurrentNodeId;
+
+#pragma endregion
+
+#pragma region Conversation Flags
+
+	//Dialogue Manager will have its own versions of flags
+	//so it would remember the state of the current dialogue.
+	
+	UPROPERTY()
+	bool bJoined = false;
+
+	UPROPERTY()
+	bool bKilled = false;
+
+	UPROPERTY()
+	bool bDoubt = false;
+
+	UPROPERTY()
+	bool bAngered = false;
 
 #pragma endregion
 

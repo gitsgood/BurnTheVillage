@@ -5,19 +5,20 @@
 		{
 			"NodeId": "Node2",
 			"NPCDialogue": "Here's my problem... I'm being followed. Watched. I'm a threat.",
-			"OutgoingEdgeIds": ["Edge2", "Edge3"],
-			"bJoinedTheEffort": true
+			"OutgoingEdgeIds": ["Edge2", "Edge3"]
 		},
 		{
 			"NodeId": "Node1",
 			"NPCDialogue": "Good! I think I can trust you. Nobody else in town.",
-			"OutgoingEdgeIds": ["Edge1"]
+			"OutgoingEdgeIds": ["Edge1"],
+			"bHaveDoubts": true
 		},
 		{
 			"NodeId": "Node3",
 			"NPCDialogue": "Just as I thought! Just as I thought!",
-			"OutgoingEdgeIds": [],
-			"bJoinedTheEffort": false
+			"OutgoingEdgeIds": ["Edge5"],
+			"bJoinedTheEffort": false,
+			"bVillagerAngered": true
 		},
 		{
 			"NodeId": "START",
@@ -41,18 +42,25 @@
 			"EdgeId": "Edge2",
 			"PlayerDialogue": "That's rough, buddy.",
 			"NextNodeId": "",
+			"bJoinedTheEffort": true,
 			"bFinishedDialogue": true
 		},
 		{
 			"EdgeId": "Edge3",
 			"PlayerDialogue": "Oof.",
 			"NextNodeId": "",
+			"bJoinedTheEffort": false,
 			"bFinishedDialogue": true
 		},
 		{
 			"EdgeId": "Edge4",
 			"PlayerDialogue": "Wouldn't you like to know?",
-			"NextNodeId": "Node3",
+			"NextNodeId": "Node3"
+		},
+		{
+			"EdgeId": "Edge5",
+			"PlayerDialogue": "*Leave*",
+			"NextNodeId": "",
 			"bFinishedDialogue": true
 		}
 	]

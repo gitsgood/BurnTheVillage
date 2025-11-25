@@ -51,6 +51,13 @@ bool UBurnTheVillageDialogueManager::InitiateConversationState(const FString& NP
 
 	CurrentNPCId = NPCId;
 	CurrentNodeId = StartNodeId;
+
+	//Resetting the values so they won't carry over from the previous dialogue.
+	bJoined = false;
+	bKilled = false;
+	bAngered = false;
+	bDoubt = false;
+	
 	return true;
 }
 
@@ -65,6 +72,57 @@ bool UBurnTheVillageDialogueManager::GetCurrentNode(FBurnTheVillageDialogueNode&
 	if (!Node) { BTV_LOG(LogTemp, Warning, TEXT("%s says: Did not find node attached to NodeId: %s , for NPCId: %s"), TEXT(__FUNCTION__), *CurrentNodeId, *CurrentNPCId); return false; }
 
 	OutNode = *Node;
+	
+		//The switchers are in this exact if-order because any other kind would override the off-toggles. Please don't shuffle.
+
+		if (Node->bVillagerAngered == true)
+		{
+			bAngered = true;
+			bDoubt = false;
+			/*
+			 You should really decide whether you're a bitch or not. You can piss off someone and then regret it.
+			But it's harder to imagine regretting your choices, then choosing to be more evil, and still doubting it.
+
+			This is more psychology than programming at this point.
+			*/
+		}
+
+		if (Node->bHaveDoubts == true)
+		{
+			bDoubt = true;
+		}
+		
+		if (Node->bJoinedTheEffort == true)
+		{
+			bJoined = true;
+			bKilled = false;
+			
+
+			/*
+			 Because you can't have a person both join and be dead.
+			Obviously. Unless you're a necromancer.
+			
+			"But, Rain, wouldn't it mean that if the NPC is dead, the Joined flag will resurrect them?"
+			Look, I felt the need to put something there. I guess you can call it error-proofing.
+			*/
+		}
+		if (Node->bVillagerKilled == true)
+		{
+			bKilled = true;
+			bAngered = false;
+			bJoined = false;
+			//If a person is dead, they can't be angry at you. Nor join you.
+			bDoubt = false;
+			/*
+			 Setting doubts to false bc if you really start questioning whether you're a baddie
+			AFTER you stabbed someone repeatedly, maybe you're not just evil, but a moron, too.
+			*/
+		}
+	
+	BTV_LOG(LogTemp, Warning, TEXT("bKilled: %s"), bKilled ? TEXT("true") : TEXT("false"));
+	BTV_LOG(LogTemp, Warning, TEXT("bAngered: %s"), bAngered ? TEXT("true") : TEXT("false"));
+	BTV_LOG(LogTemp, Warning, TEXT("bJoined: %s"), bJoined ? TEXT("true") : TEXT("false"));
+	BTV_LOG(LogTemp, Warning, TEXT("bDoubt: %s"), bDoubt ? TEXT("true") : TEXT("false"));
 	return true;
 }
 
@@ -93,6 +151,30 @@ bool UBurnTheVillageDialogueManager::AdvanceDialogue(const FString& EdgeId)
 	const FBurnTheVillageDialogueEdge* ChosenEdge = DialogueData->EdgeMap.Find(EdgeId);
 	if (!ChosenEdge) { BTV_LOG(LogTemp, Warning, TEXT("%s says: Failed to retrieve ChosenEdge with EdgeId: %s"), TEXT(__FUNCTION__), *EdgeId); return false; }
 
+	if (ChosenEdge->bVillagerAngered == true)
+	{
+		bAngered = true;
+		bDoubt = false;
+	}
+
+	if (ChosenEdge->bHaveDoubts == true)
+	{
+		bDoubt = true;
+	}
+		
+	if (ChosenEdge->bJoinedTheEffort == true)
+	{
+		bJoined = true;
+		bKilled = false;
+	}
+	if (ChosenEdge->bVillagerKilled == true)
+	{
+		bKilled = true;
+		bAngered = false;
+		bJoined = false;
+		bDoubt = false;
+	}
+	
 	if (!DialogueData->NodeMap.Contains(ChosenEdge->NextNodeId)) 
 	{ 
 		BTV_LOG(LogTemp, Log, TEXT("%s says: No Node found to come after ChosenEdge, ending dialogue"), TEXT(__FUNCTION__));
@@ -100,7 +182,7 @@ bool UBurnTheVillageDialogueManager::AdvanceDialogue(const FString& EdgeId)
 		
 		return false;	//	Dialogue not advanced, therefore returns false.
 	}
-
+	
 	CurrentNodeId = ChosenEdge->NextNodeId;
 	return true;
 }
@@ -110,7 +192,7 @@ void UBurnTheVillageDialogueManager::EndDialogue()
 	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(this, 0);
 
 	ABurnTheVillageCharacter* PlayerCharacter = Cast<ABurnTheVillageCharacter>(Character);
-
+	
 	if (!PlayerCharacter)
 	{
 		BTV_LOG(LogTemp, Warning, TEXT("%s says: PlayerCharacter reference invalid or cast failed."), TEXT(__FUNCTION__));
@@ -126,12 +208,30 @@ void UBurnTheVillageDialogueManager::EndDialogue()
 	}
 
 	ConversedWithNPC->SetbFinishedDialogue(true);
-	FBurnTheVillageDialogueNode DialogueNode;
-	GetCurrentNode(DialogueNode);
-	if (DialogueNode.bJoinedTheEffort==true)
+	
+	// FBurnTheVillageDialogueNode DialogueNode;
+	// GetCurrentNode(DialogueNode);
+	
+	if (bJoined == true)
 	{
 		ConversedWithNPC->SetbJoinedTheEffort(true);
+		//@TODO Here be delegates
 	}
+
+	if (bKilled == true)
+	{
+		//@TODO Here be delegates
+	}
+	if (bDoubt == true)
+	{
+		//@TODO Here be delegates
+	}
+	if (bAngered == true)
+	{
+		//@TODO Here be delegates
+	}
+
+	
 	ConversedWithNPC->HideInteract(ConversedWithActor);
 	
 	CurrentNPCId.Empty();

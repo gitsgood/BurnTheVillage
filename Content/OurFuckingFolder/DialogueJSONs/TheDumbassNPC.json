@@ -16,8 +16,8 @@
         {
             "NodeId": "INITIATION",
             "NPCDialogue": "Yes... come with me...",
-            "OutgoingEdgeIds": ["ByeBye"],
-			"bJoinedTheEffort": true
+            "OutgoingEdgeIds": ["ByeBye"]
+			
         }
     ],
     "Edges":
@@ -25,17 +25,22 @@
         {
             "EdgeId": "FuckYouOption",
             "PlayerDialogue": "I hate you, I hate Tommy Wiseau, He ruined everything!",
-            "NextNodeId": "GOODBYE"
+            "NextNodeId": "GOODBYE",
+			"bVillagerAngered": true,
+			"bHaveDoubts": true
         },
         {
             "EdgeId": "ILoveWiseau",
             "PlayerDialogue": "OMG, I fucking LOVE THIS, PLEASE INITIATE ME INTO THINE WAYS!",
-            "NextNodeId": "INITIATION"
+            "NextNodeId": "INITIATION",
+			"bHaveDoubts": true,
+			"bJoinedTheEffort": true
         },
         {
             "EdgeId": "ByeBye",
             "PlayerDialogue": "...",
             "NextNodeId": ""
+			
         }
     ]
 }

@@ -7,7 +7,7 @@
 #include "BurnTheVillageDialogue.generated.h"
 
 /**
- * @brief This is were we map out part of the JSON's structure.
+ * @brief This is where we map out part of the JSON's structure.
  * 
  * -More specifically, we specify the Edge object's variable names.
  * 
@@ -27,12 +27,28 @@ struct BURNTHEVILLAGE_API FBurnTheVillageDialogueEdge
 	UPROPERTY()
 	FString NextNodeId;
 
-	UPROPERTY()
-	bool bFinishedDialogue = false;
+	//FLAGS BELOW
+
+	 UPROPERTY()
+	 bool bFinishedDialogue = false;
+	
+	 UPROPERTY()
+	 bool bJoinedTheEffort = false;
+	
+	 UPROPERTY()
+	 bool bHaveDoubts = false;
+	
+	 UPROPERTY()
+	 bool bVillagerAngered = false;
+	
+	 UPROPERTY()
+	 bool bVillagerKilled = false;
+
+	//FLAGS ABOVE
 };
 
 /**
-* @brief This is were we map out part of the JSON's structure.
+* @brief This is where we map out part of the JSON's structure.
 * 
 * -More specifically, we specify the Node object's variable names.
 * 
@@ -52,12 +68,29 @@ struct BURNTHEVILLAGE_API FBurnTheVillageDialogueNode
 	UPROPERTY()
 	TArray<FString> OutgoingEdgeIds;
 
+	//FLAGS FLAGS EVERYWHERE
+	
+	UPROPERTY()
+	bool bFinishedDialogue = false;
+	
 	UPROPERTY()
 	bool bJoinedTheEffort = false;
+
+	UPROPERTY()
+	bool bHaveDoubts = false;
+
+	UPROPERTY()
+	bool bVillagerAngered = false;
+
+	UPROPERTY()
+	bool bVillagerKilled = false;
+
+	//ALL YOUR FLAGS ARE BELONG TO US
+	
 };
 
 /**
-* @brief This is were we map out the entire JSON's structure.
+* @brief This is where we map out the entire JSON's structure.
 *
 * -JSON natively supports arrays and objects. By defining the objects and placing them as arrays,
 * 
